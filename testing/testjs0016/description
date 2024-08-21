@@ -1,0 +1,9 @@
+-----------------------------------------------
+js0016: Ssimpl java-sender/Jsimpl java-receiver binary message test
+
+This test consists of a local Ssimpl java sender program exchanging a
+binary-type message with a local Jsimpl java receiver program. The java receiver
+is running locally for convenience only. It is actually communciating with the
+java sender via the tclSurrogate. The tclSurrogate allows the receiver to be
+running on another host but for our purposes, the host setting is localhost,
+hence communications occur via sockets through the loopback interface.

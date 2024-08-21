@@ -1,0 +1,16 @@
+#!/bin/bash
+echo tclet example apps
+
+echo "============================================"
+cd $FC_HOME/bin
+echo "starting trace logger attached as LOGGER"
+fclogger -n LOGGER > junk &
+
+echo "starting tcl surrogate attached as SURRO"
+echo "============================================"
+tclSurrogate -n SURRO -l LOGGER
+
+
+echo stopping tclet example apps
+echo "============================================"
+#$FC_HOME/bin/fcslay LOGGER

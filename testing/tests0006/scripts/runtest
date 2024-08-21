@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2007/07/24 20:34:25  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0006
+TEST_DESC="proxy unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+echo "" | tee -a $OUTFILE
+echo "This may take a while to complete ... please wait" | tee -a $OUTFILE
+echo "" | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/proxy/bin
+cksum proxy | tee -a $OUTFILE
+proxy -n PROXY -r RECV -l LOGGER &
+
+sleep 1
+
+cksum receiverSim | tee -a $OUTFILE
+receiverSim -n RECV_01 -p PROXY -l LOGGER -b &
+
+cksum receiverSim | tee -a $OUTFILE
+receiverSim -n RECV_02 -p PROXY -l LOGGER -b &
+
+cksum receiverSim | tee -a $OUTFILE
+receiverSim -n RECV_03 -p PROXY -l LOGGER -b &
+
+cksum proxyStim | tee -a $OUTFILE
+proxyStim -n STIM -p PROXY -l LOGGER
+
+fcslay RECV_01
+fcslay RECV_02
+fcslay RECV_03
+fcslay PROXY
+fcslay LOGGER
+rm $FIFO_PATH/Z.PROXY
+echo "Test finished you can run posttest $TEST_NO for result"

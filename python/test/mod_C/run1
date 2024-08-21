@@ -1,0 +1,9 @@
+#! /bin/sh
+
+../../bin/receiver &
+
+sleep 1
+
+python senderCbinary.py
+
+fcslay RECEIVER_B

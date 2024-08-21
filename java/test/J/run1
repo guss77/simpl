@@ -1,0 +1,12 @@
+#! /bin/sh
+
+CLASSPATH=../../class
+LIBPATH=../../lib
+
+java -classpath $CLASSPATH -Djava.library.path=$LIBPATH ReceiverJbinary &
+
+sleep 3
+
+../../bin/sender
+
+fcslay RECEIVER

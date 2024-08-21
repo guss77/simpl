@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+#$Log: viewtest,v $
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+STAMP=`date +%y%m%d%H%M%S`
+TEST_DIR=$TEST_HOME/testing/test$1/results
+
+# usage
+function usage
+{
+echo;
+echo "================ viewtest ==================";
+echo "   view results of a given test";
+echo;
+echo "   viewtest <test#> <options>";
+echo "   where options are:";
+echo "        before - results from pretest";
+echo "        after - results from posttest";
+echo "        ls - list all the results";
+echo "        <filename> - view exact result file";
+echo "";
+echo "   eg.";
+echo "        viewtest 39 after";
+echo "================= done ====================";
+echo
+}
+
+# saveit
+function saveit
+{
+echo "========================================"
+echo "These results are stored in a temporary file at the moment."
+echo "They will be overwritten with the next test run."
+echo -ne "Do you want to permanently store these results? [y/n] n\b"
+read ans
+if [ z$ans = "zy" ]
+then
+        cd $TEST_DIR
+        cp $1shot $1.$STAMP
+        echo "Saving result as: $1.$STAMP"
+fi
+}
+
+# main
+if [ $# = 0 ]
+then
+        usage
+else
+if [ $# = 1 ]
+then
+        view $TEST_DIR/test.out
+else
+if [ $# = 2 ]
+then
+        if [ $2 = after ] || [ $2 = a ]
+        then
+                view $TEST_DIR/aftershot
+                saveit after
+        else
+        if [ $2 = before ] || [ $2 = b ]
+        then
+                view $TEST_DIR/beforeshot
+                saveit before
+        else
+        if [ $2 = ls ]
+        then
+                cd $TEST_DIR
+                ls | more
+        else
+                view $TEST_DIR/$2
+        fi
+        fi
+        fi
+
+fi
+fi
+fi
+

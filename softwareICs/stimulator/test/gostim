@@ -1,0 +1,15 @@
+echo starting stimulator unit test
+
+MYDIR=`pwd`
+export PATH=$PATH:.
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $MYDIR/junk &
+
+cd $SIMPL_HOME/softwareICs/stimulator/bin
+receiver -n BOBR -l LOGGER &
+stimulator -n BOBS -r BOBR -l LOGGER
+
+echo stopping stimulator unit test
+$SIMPL_HOME/bin/fcslay BOBR
+$SIMPL_HOME/bin/fcslay LOGGER

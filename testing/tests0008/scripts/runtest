@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2008/04/24 17:26:50  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0008
+TEST_DESC="stimulator unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/stimulator/bin
+cksum receiver | tee -a $OUTFILE
+receiver -n BOBR -l LOGGER &
+
+echo "===================================================="
+echo ""
+echo "to run in automatic mode where commands are fed from"
+echo $TEST_DIR/data/test_001
+echo "on a separate console type:"
+echo "    auxtest s0008"
+echo ""
+echo "for help type:"
+echo " -> ?"
+echo "===================================================="
+
+cksum stimulator | tee -a $OUTFILE
+stimulator -n BOBS -r BOBR -l LOGGER
+
+fcslay BOBR
+fcslay LOGGER
+
+echo "Test finished you can run posttest $TEST_NO for result"

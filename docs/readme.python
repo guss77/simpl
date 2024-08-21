@@ -1,0 +1,791 @@
+/***********************************************************************
+
+FILE:			readme.python
+
+DATE:			June 24, 2013
+
+DESCRIPTION:	Description of how to use the SIMPL python libraries.
+
+NOTE:			tabs = 4 for this file.
+
+REVISIONS:
+$Log: readme.python,v $
+Revision 1.5  2013/06/25 15:33:49  bobfcsoft
+revised for Python3.x and new API
+
+***********************************************************************/
+
+================================================================================
+Introduction to SIMPL and Python
+================================================================================
+
+This file is intended as a brief description and background of the SIMPL
+Python libraries. Currently, there are two Python SIMPL modules; viz.csimpl.py
+and tclsimpl.py.
+
+The csimpl.py module is based upon C extensions. The C extensions in turn
+are based on the C SIMPL code that was developed for programs running on
+Linux/UNIX/Solaris/MAC OS X etc. platforms. For remote SIMPL communications the
+TCP/IP and RS-232 surrogates are compatible with this C library. The surrogates
+were also developed on and for Linux type platforms. As such, they are
+incompatible with Windows platforms. This is where the tclsimpl.py module comes
+in. They allow Windows platforms to communicate with other platforms such as
+Linux through the tclSurrogate. 
+
+At this time, there is no Windows-Windows SIMPL package. The reason for this is
+that historically, none of the developers had any use for Windows. If a Windows
+host was involved in any way within a specific project, it was treated as the
+poor relative. By this, it is meant that the Windows host might provide a front
+end GUI and/or receive data for storage. The stored data, if any, was usually
+made available to some Windows-based package like Excel. All processing and
+control aspects of the projects were performed on Linux/UNIX/etc. hosts. Other
+reasons for not using Windows are its licensing fees, open source issues, and
+general lack of reliability for the sort of projects that SIMPL has been
+involved in.
+
+The Python function call API is not usually the same as the C function call
+API because there are different accepted styles between the two languages. Some
+of the differences arise because Python works better at passing in set and
+immutable values as function arguments and replying mutable values to the
+calling program through its return values. As well, in C we have to keep track
+of the sizes of variable buffers whereas in Python, the variable name, size etc.
+is constantly kept track of internally.
+
+NOTE: the following has been written with a Linux distribution in mind
+(directory names and locations specifically) but the basic ideas are unchanged
+w.r.t. the OS being used.
+
+================================================================================
+csimpl.py module
+================================================================================
+
+------------
+Introduction
+------------
+
+csimpl.py uses the C SIMPL library in the form of Python extensions. The
+original purpose behind this development was for a rapid production of GUIs. The
+desire was to use Tk as a graphical front end for systems that use SIMPL to
+coordinate and communicate among its various processes. Python is a wonderful
+language for fast development and so a SIMPL library was devised.
+
+csimpl.py is based on C extensions libraries simpl2.so and simpl3.so. The 2
+and the 3 in the shared object naming (*.so) indicates compatibility with python
+2.* and python 3.* respecively. In terms of csimpl, the correct shared object
+library is loaded based on the version of the Python interpreter.
+
+SIMPL functionality can be invoked either by function calls or by creating an
+instance of SIMPL (object) and only depends on the style of the programmer.
+
+-----------------------
+SIMPL Functions/Methods
+-----------------------
+
+Simpl(string name, integer size)
+
+Returns a Simpl class instance. nameAttach() (follows) is part of the
+constructor and nameDetach() (follows) is part of the destructor.
+
+"name" is the SIMPL name given to the calling script program.
+"size" is the maximum message buffer size required in bytes.
+
+--------------------------------------------------------------------------------
+
+integer nameAttach(string name, integer size)
+
+Sets up all required SIMPL initializations. It is usually the first SIMPL call
+made in a program unless an instance of the Simpl class is made first, then it
+is called as part of the constructor.
+
+Returns an integer >=0 for success and -1 for failure.
+"name" is the SIMPL name given to the calling script program.
+"size" is the maximum message buffer size required in bytes.
+
+--------------------------------------------------------------------------------
+
+integer nameDetach()
+
+Returns a 0 or -1 which indicates success or failure respectively.
+
+Removes all SIMPL aspects from a program. In the case of an instance of SIMPL,
+it is called as part of the destructor.
+
+--------------------------------------------------------------------------------
+
+integer surDetach(integer id)
+
+Releases a network surrogate based on the integer id of the surrogate.
+
+Returns a 0 or -1 which indicates success or failure respectively.
+
+--------------------------------------------------------------------------------
+
+integer nameLocate(string protocol:host:name)
+
+Sets up a SIMPL communications channel with another SIMPL program identified by
+"name", running on "host", and using "protocol" type surrogate (TCP/IP or
+RS-232). If the TCP/IP surrogate (default) is to be used, "protocol" is
+unnecessary. If the other SIMPL program is running locally, the "host" is also
+unnecessary. 
+
+Returns >=0 or -1 which indicates success or failure respectively.
+
+--------------------------------------------------------------------------------
+
+integer size, integer id =  receive()
+
+Receives a SIMPL message from another program.
+
+Returns the incoming message size and the sender's SIMPL id.
+
+--------------------------------------------------------------------------------
+
+integer = send(integer id)
+
+Sends a SIMPL message to and receives a SIMPL message in reply to another SIMPL
+program. Note that sometimes the replied message is NULL.
+
+Returns the size of the replied message or -1 in case of an error. The integer
+id is the SIMPL id of the receiving program.
+
+--------------------------------------------------------------------------------
+
+integer reply(integer id)
+
+Sends a reply message to a SIMPL sender.
+
+Returns a -1 in the case of an error or the size of the reply message.
+id is the sender's SIMPL id.
+
+--------------------------------------------------------------------------------
+
+integer trigger(integer id, integer proxy)
+
+Sends a proxy to a SIMPL receiver.
+
+Returns a 0 or -1 which indicates success or failure respectively. The first
+integer argument is the receiver's SIMPL id. The second is the value of the
+proxy which must be >=0.
+
+--------------------------------------------------------------------------------
+
+integer whatsMyReceiveFd()
+
+Returns the SIMPL file descriptor for the receive fifo.
+
+--------------------------------------------------------------------------------
+
+string whatsMyError()
+
+Returns the last SIMPL error in a similar fashion to strerror(errno).
+
+--------------------------------------------------------------------------------
+
+integer returnProxy(integer proxy)
+
+Returns the true value of a received proxy. proxy is the received value which
+must be converted to its true value.
+
+================================================================================
+tclsimpl.py module
+================================================================================
+
+------------
+Introduction
+------------
+
+The name tclsimpl merely reflects the origin of the original code and the use of
+the so-called tclSurrogate version of networked SIMPL rather than use of the
+usual TCP/IP surrogates ... there is no Tcl code involved.
+
+Rather than explain it, it is easier to understand it by seeing how it is used.
+Suppose that you have a program running on a Windows host that needs to SIMPL
+communicate with a another program that is running on a Linux host. Now, the C
+extended module is not compatible with Windows C programs. Moreover, the
+surrogate programs (ie. TCP/IP or RS-232) which make the network message passing
+possible are not compatible with Windows either.
+
+The tclSurrogate approach moves all of the surrogate functionality to the Linux
+host and allows the program running on the Windows to communicate with the Linux
+host. This will not apply to a case where a Windows program SIMPL communicates
+with another Windows program either over a network or internally on one host.
+
+As an aside (nothing to do with Python), the tclSurrogate networking scheme has
+been ported to the Arduino platform because it is simply a microcontroller
+without an operating system. This allows the Arduino to SIMPL message with
+computer hosts.
+
+-----------------------
+SIMPL Functions/Methods
+-----------------------
+
+Simpl(string name)
+
+Returns a Simpl class instance. nameAttach() (follows) is part of the
+constructor and nameDetach() (follows) is part of the destructor.
+
+"name" is the SIMPL name given to the calling script program.
+
+--------------------------------------------------------------------------------
+
+integer nameAttach(string port:host:name)
+
+Sets up all required SIMPL initializations. It is usually the first SIMPL call
+made in a program unless an instance of the Simpl class is made first, then it
+is called as part of the constructor.
+
+Returns an integer >=0 for success and -1 for failure.
+"port"is the computer port that the tclSurrogate process is babysitting.
+"host" is the name/URL of the host that the tclSurrogate is running on.
+"name" is the name to be given to the tclSurrogate child representing the
+calling Python script.
+
+--------------------------------------------------------------------------------
+
+integer nameDetach()
+
+Returns a 0 or -1 which indicates success or failure respectively.
+
+Removes all SIMPL aspects from a program. In the case of an instance of SIMPL,
+it is called as part of the destructor.
+
+--------------------------------------------------------------------------------
+
+integer nameLocate(string name)
+
+Tells the tclSurrogate child running on the remote host (activated by
+nameAttach()) to SIMPL connect to the remote program with SIMPL name "name".
+
+Returns >=0 or -1 which indicates success or failure respectively.
+
+--------------------------------------------------------------------------------
+
+integer size, integer id =  receive()
+
+Receives a SIMPL message from another program.
+
+Returns the incoming message size and the sender's SIMPL id.
+
+--------------------------------------------------------------------------------
+
+integer = send(integer id)
+
+Sends a SIMPL message to and receives a SIMPL message in reply to another SIMPL
+program. Note that sometimes the replied message is NULL.
+
+Returns the size of the replied message or -1 in case of an error. The integer
+id is the SIMPL id of the receiving program.
+
+--------------------------------------------------------------------------------
+
+integer reply(integer id)
+
+Sends a reply message to a SIMPL sender.
+
+Returns a -1 in the case of an error or the size of the reply message.
+id is the sender's SIMPL id.
+
+================================================================================
+Message Buffer Packing and Unpacking Functions/Methods
+================================================================================
+
+Both modules use the packMsg() and unpackMsg() functions to construct outgoing
+and deconstruct incoming messages respectively. Both packMsg() and unpackMsg()
+use a format string similar in spirit if not in character to the C function
+sprintf().
+
+packMsg() and unpackMsg() are concerned with C data types and one dimensional
+arrays of the same.
+
+The form of packMsg() is: packMsg(action, form, *args)
+
+The "action" defines whether the message is binary or byte-character based. For
+example, packing a message that is going to be sent to a C program would be
+best sent as binary because that is the format best understood by a C program.
+
+The "form" is the type of C datum to be packed into the message. The available
+format letters are and correspond to:
+b - an unsigned byte
+c - an unsigned 8-bit byte character
+h - a signed short integer
+i - an signed integer
+l - a signed long integer
+f - a floating point number
+d - a double precision floating point number
+s - a byte character string
+H - a single dimensional array of signed short integers
+I - a single dimensional array of signed integers
+L - a single dimensional array of signed long integers
+F - a single dimensional array of floating point numbers
+D - a single dimensional array of double precision floating point numbers
+
+Note that the form b is new. It was created to handle situations where each bit
+is examined (0/1) for its respective state and has compatibility with the
+bitwise operations like & and |.
+
+There is no need to precede any of these format characters with a number
+indicating size because the sizes are well known with the Python environment.
+For example,
+
+packMsg(BIN, "s", "We are the knights who say neee!")
+
+Python "knows" the length of "We are the etc."
+
+The *args are the variable number of data types to be posited into the
+outgoing message.
+
+The form of unpackMsg() is: arg1, arg2, arg3, ... argn = unpackMsg(action, form)
+
+The "action" is the same as described above for packMsg(). The form however is
+slightly different in that Python does not know the sizes of the incoming
+strings or arrays but the programmer does.
+For example:
+
+a = unpackMsg(BIN, "32s")
+
+where this will unpack the message used as an example with packMsg().
+print(a) will display "We are the knights who say neee!"
+
+-----------
+BIN and CHR
+-----------
+
+The BIN and CHR which are found as the first arguments in the pack/unpack
+methods/functions indicate how the data to be packed/unpacked is to formatted
+relative to memory boundaries. BIN is for binary and CHR is for character or
+text-based formatting. For example, when sending a message to a C receiver one
+would use BIN because that is how the C receiver will naturally unpack the
+saidmessage by most likely using a binary structure template of the message. As
+another example, sending a message to a Python receiver could be either BIN or
+CHR as long as the receiver knows ahead what to expect.
+
+================================================================================
+Micellaneous Functions/Methods
+================================================================================
+
+Both modules use the following functions/methods to perform various
+miscellaneous tasks.
+
+--------------------------------------------------------------------------------
+
+reset()
+
+Resets the internal message buffers and their associated variables to a known
+state. Usually used by the SIMPL functions internally.
+
+Returns nothing.
+
+--------------------------------------------------------------------------------
+
+resetInBuffer()
+
+Resets the internal incoming message buffer and its associated variables to a
+known state. Usually used by the SIMPL functions internally.
+
+Returns nothing.
+
+--------------------------------------------------------------------------------
+
+resetOutBuffer()
+
+Resets the internal outgoing message buffer and its associated variables to a
+known state. Usually used by the SIMPL functions internally.
+Returns nothing.
+
+--------------------------------------------------------------------------------
+
+crosscopy()
+
+Copies the contents of the outgoing message buffer to the incoming message
+buffer for reasons of testing and verification.
+Returns nothing.
+
+--------------------------------------------------------------------------------
+
+returnInBuffer()
+
+Returns the conents of the incoming message buffer. Not generally used because
+the unpackMsg() function returns the contents of the message.
+
+--------------------------------------------------------------------------------
+
+returnOutBuffer()
+
+Returns the conents of the outgoming message buffer. Not generally used
+because the unpackMsg() function returns the contents of the message.
+
+--------------------------------------------------------------------------------
+
+setInByteOrder(order)
+
+Set the incoming message byte order. Some CPU architectures differ in their
+byte ordering. If this function is called prior to packMsg(), the message
+contents will be packed in the byte ordering required by the receiving program.
+order = NATIVE, LITTLE_ENDIAN, BIG_ENDIAN
+Returns nothing.
+
+--------------------------------------------------------------------------------
+
+setOutByteOrder(order)
+
+Set the outgoing message byte order. See setInByteOrder().
+order = NATIVE, LITTLE_ENDIAN, BIG_ENDIAN
+Returns nothing.
+
+--------------------------------------------------------------------------------
+
+setInArch(arch)
+
+Set the incoming message for 64/32 bit. Sometimes different hosts that are
+sendiing and receiving messages between one and other have different CPU
+architectures. For example, suppose a 32 bit CPU host sends a C type long
+integer to a 64 bit CPU host as part of a message. The 64 bit host can set the
+incoming message buffer to read long integers as 32 bit rather than 64 bit by
+calliing this function prior to unpacking.
+arch = BIT_64, BIT_32
+Returns nothing.
+
+-------------------------------------------------------------------------------
+
+setOutArch(arch)
+
+Set the outgoing message for 64/32 bit. See setInArch().
+arch = BIT_64, BIT_32
+Returns nothing.
+
+================================================================================
+tcslsimpl.py and Windows
+================================================================================
+
+The tclSurrogate approach to remote communications is not the same as the
+TCP/IP or the RS-232 surrogates. These two surrogates suppose that they are
+talking to an opposite surrogate between two different hosts. This works very
+well in networks that are running Linux and/or Unix and/or MAC OS X etc. In the
+case of a Windows host wanting to talk to a Linux host say, this approach will
+not work. There is no SIMPL library for Windows and so these surrogates cannot
+be built and run on Windows.
+
+The solution is to put all of the "SIMPL aspects" on one host; this is what the
+tclSurrogate approach does. Let us look at an example. Suppose that we want to
+have a Windows-based host act as a GUI in order to provide some data entry, but
+we want the data to be processed by some other program running on a remote Linux
+host. Windows usually has the Tcl interpreter "wish" or the Python interpreter
+"python" present. A Tcl or a Python script does not need to be compiled, linked
+etc. and so there is no need for a SIMPL C library for Windows. The necessary
+functionality for communications exists within the Tcl library or the Python
+modules wssimpl/ssimpl. The situation appears thus:
+
++-------------------+             +-------------------------------+
+|                   |             |           Linux Host          |
+|   windows host    |  messages   |                               |
+|      running      |<==============>tclSurrogate<===>myProcessor |
+|  python myGUI.py  |             |                               |
+|                   |             |                               |
++-------------------+             +-------------------------------+
+
+
+Running the program called tclSurrogate on the Linux host allows the myGUI.py
+program to SIMPL communicate with the program called myProcessor. myGUI.py
+could also be myGUI.tcl because tclSurrogate (hence the name) is actually a C
+program which does not care who it talks to as long as the rules are followed.
+
+There is no increase in functionality by having made this port from Tcl to
+Python. However, it does allow the option to use another language other than
+Tcl for the sort of program that is myGUI.py.
+
+NOTE 1: Both the Tcl and wssimpl.py/ssimpl.py modules use TCP/IP sockets as
+their modus operandi.
+
+NOTE 2: As of this writing Trigger() is not supported by tclSurrogate. As well,
+whatsMyError() merely reports that there is an error, not any useful
+information.
+
+================================================================================
+Python SIMPL in CGI programs
+================================================================================
+
+We are not going to discuss CGI modules and topics such as FastCGI as they are
+beyond the scope of this note; we are going to keep this as simple as possible.
+
+CGI is a mechanism allowing a web server to invoke a program, capture the
+output of that program, wrap it in an HTTP header and return it to a web
+browser.
+
+SIMPL function calls have been used in CGI programs. However, there are a
+number of issues that have to be addressed before this can happen. We will
+proceed through them one step at a time.
+
+Web Server
+==========
+
+Suppose that the web server being used is Apache. We have chosen Apache
+specifically due to its widespread use. Apache spawns the CGI program and
+passes data to that program. The data usually originates from a form of some
+sort that was filled in via a web browser. The CGI program passes its processed
+data back to Apache via its STDOUT. Essentially, the order of events is as
+follows:
+
+1. A browser connects to a server.
+2. A form of some sort is sent to the browser from the server.
+3. The form data is filled in on the browser and sent back to the server.
+4. Upon receiving the filled in form, the server spawns the appropriate CGI
+program.
+5. The data from the form is extracted by the CGI program.
+6. The data from the form is processed by the CGI program.
+7. The results of the processing are returned to the browser by the CGI program
+via the server.
+
+In order for Apache to know what to do, it is necessary for the configuration
+file to be modified. Let us say that that file is /etc/httpd/conf/httpd.conf.
+Let us also say that the html, cgi, etc. files accessed and used by Apache are
+located in subdirectories below /var/www. A number of the following
+configuration file directives may already be in your httpd.conf file.
+
+1. The following line should appear in the configuration file so that the CGI
+dynamic shared object (DSO) can be used by Apache:
+
+				LoadModule cgi_module modules/mod_cgi.so
+
+2. A useful shortcut for Apache is to define what is meant by the standard
+directory listing for cgi-bin, the location of the CGI programs. This also
+appears as a line in the configuration file.
+
+				ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
+
+3. You will need to be able to access the CGI programs so you will need the
+following as well:
+
+				<Directory "/var/www/cgi-bin">
+					AllowOverride None
+					Options None
+					Order allow,deny
+					Allow from all
+				</Directory>
+
+4. In order to access SIMPL libraries it may be necessary to export a shell
+variable to Apache. Specifically, if the CGI program is a Python script then
+the Python interpreter will need to know where the SIMPL modules are located.
+This is often accomplished using the shell variable PYTHONPATH. For example, at
+boot time the following shell command may be run from a profile:
+
+				export PYTHONPATH=/home/simpl/python/modules
+
+If this is the case, then the following line may also be required in the Apache
+configuration file:
+
+				PassEnv PYTHONPATH
+
+5. Again for example, it may also be necessary to add the following line in the
+case of a Python-based CGI script if your CGI script name ends in .py:
+
+				AddHandler cgi-script .py
+
+6. All SIMPL libraries require a special directory whose location is given by
+an environment variable called FIFO_PATH. This variable must also be set,
+usually at boot time and must also be passed to Apache with the following line
+in the configuration file:
+
+				PassEnv FIFO_PATH
+
+Example
+=======
+
+Suppose we want to have Sudoku puzzle values entered via a browser and when
+solved, have the solution also displayed by the browser. Note that for our
+example we will run everything on one host computer, ordinarily this would not
+be the case. We will discuss this more fully at the end 
+
+The situation appears as follows:
+
++---------+  sudoku.html  +---------+
+|         |<------------->| server  |
+|         |<--------------|         |
+|         |    results    +---------+
+| browser |                   ^
+|         |                   | results
+|         |               +---------+       SIMPL       +------------+
+|         |               |sudoku.py|<=================>|   engine   |
++---------+               +---------+   communications  +------------+
+
+1. The Apache web server is started on the local host. We recommend using
+something like:
+
+					apachectl start
+
+because apachectl looks after a mess of details for you.
+
+2. The sudoku puzzle engine program is started on the local host:
+
+					engine -n ENGINE &
+
+This is the program that will try to solve the puzzle.
+
+3. The browser is brought up and a URL of http://192.168.1.1/sudoku.html is
+entered. Recall this is for a local host with an IP address of 192.168.1.1. The
+HTML file sudoku.html contains a form which resembles a sudoku puzzle and is
+contained in /var/www/html.
+
+NOTE: If you have loopback capability on your computer, you can also use
+localhost (127.0.0.1) instead of a set host address.
+
+4. When the form values are filled in, the form is sent to the server. The
+server spawns the CGI Python script called sudoku.py which is located in
+/var/www/cgi-bin.
+
+5. sudoku.py strips out the form values (sudoku puzzle clues) and SIMPL sends
+them to the engine program for possible solution.
+
+6. The engine replies the sudoku results to sudoku.py.
+
+7. sudoku.py returns an HTML message back to the browser via the server with
+the results.
+
+Possible Problems
+=================
+
+1. SIMPL function calls as used between the CGI script sudoku.py and the sudoku
+puzzle engine may have trouble communicating if the fifos that are used to
+trigger off communications and are located in FIFO_PATH have not got the
+correct read and write permissions. The fifos are made with permissions set to
+"666". This is to say that all users should have read and write permissions.
+However, if the umask on the system is set to something else, some of these
+permissions may be masked off and the CGI program may not have permissions to
+write to one of the fifos say, thus invalidating SIMPL communications resulting
+in errors. These errors will be reported back to the browser. If you don't
+wish to change the umask, then you may have to run:
+
+					cd $FIFO_PATH
+					chmod a+rw *
+
+after step 2. above.
+
+2. You may get a blank screen sent back to the browser. System security may not
+allow the Apache web server to access the SIMPL modules through the CGI script.
+You will find several entries to this effect within the
+/etc/httpd/logs/error_log file if this is happening. It will say something to
+the effect that Apache is unable to locate the SIMPL modules for import.
+
+For example, the Apache web server is running on a Linux box equipped with
+SELinux which is preventing Apache from opening the required modules according
+to the SELinux troubleshoot browser which is available from the main menu under
+the administration moniker. Apache's error_log describes the problem as one of
+not being able to locate the said modules for import. This is misleading to
+say the least. Adjusting SELinux to allow this is the solution to the problem;
+this can be done under 'main menu/administration/ SELinux Management'
+
+3. Another possibility is that PYTHONPATH and/or FIFO_PATH are not set. This
+can be checked by running "cgi_test()" after the "import cgi" in the top of
+the CGI script sudoku.py. All pertinent values and settings will displayed in
+the browser.
+
+4. Make certain that the CGI script is executable.
+
+In the Real World
+=================
+
+Normally, the browser, the server, and quite possibly the sudoku engine program
+(for example) would be running on different hosts. We have run them on one host
+for the sake of simplicity. Moreover, if some one wants to learn about these
+things, it is easier to run all of this on one computer and not have to be
+concerned with networking issues which can easily obscure anything to be gained
+here.
+
+A Bit of History (only for the insanely curious or just plain nosey)
+================
+
+The earliest SIMPL library/module for Python was originally written for Python
+version 2.0. This is referred to as a library/module because it was comprised of
+a C extension shared library which was imported into a Python script as a
+module. Despite continuing growth and change in the Python language, the SIMPL
+module continued to function correctly with very little change being necessary
+up until version 2.5.
+
+The Python/C extension library was developed on a Linux platform and references
+the original C-based SIMPL libraries. SIMPL was originally developed as a
+synchronous messaging system between C programs existing on the same host,
+intranet and/or internet networks. The idea to include Python-based program
+support for SIMPL came about given the speed of development and simplicity of
+Python while performing arduous tasks such as writing a GUI ... ask anyone who
+has written straight X-windows.
+
+The sort of situation where this would be very valuable is exemplified by the
+sudoku SIMPL programs that are available. SIMPLy put, there is a Python program
+running in the foreground acting as a GUI. In the background there is a C
+program which receives input from the GUI, processes it and returns a result.
+The GUI displays a sudoku puzzle interface where the end user may enter values
+and then sends these values to the  C program  running in the background. The
+GUI then awaits a reply. If this reply is a solution to the puzzle, the solution
+is then displayed. This situation exploits the best of both languages. The
+Python GUI's ease of use and development and the power of C to crunch numbers.
+(Actually, Python is no slouch at crunching numbers either!) SIMPL forms the
+communications and control channel allowing these two disparate programs to
+cooperate with one and other.
+
+It should be stated for the sake of completeness that currently there exist
+SIMPL libraries/modules/etc. which support C, Tcl, Python and Java
+programming. Some of these various libraries came to be in order to solve
+certain technical issues and this will addressed next.
+
+It has been mentioned that the SIMPL C library was the first to exist and that
+it was developed on a Linux platform. With very little or no tweaking it was
+also found to operate correctly on Unix, MAC OS X, AIX, Solaris etc. platforms
+given that the SIMPL C library was written with POSIX standards in mind.
+
+However, there is an exception, Windows (of course). There is an effort being
+put into building a Cygwin compatible SIMPL library, thus allowing the C SIMPL
+libraries to run on Windows platforms.
+
+Nevertheless at this point in time, neither Python nor Java programs using the C
+SIMPL library are able to run on Windows since Python uses the C SIMPL library
+through its extension interface while Java uses it through its JNI (Java Native
+Interface) procedures.
+
+That really leaves us with Tcl. The Tcl SIMPL library is in its own way an
+entirely different sort of SIMPL. This works in a rather peculiar way that has
+its roots in history. Recall that it was pointed out that the C SIMPL library
+could not run on Windows and so could not be extended to Python or Java to run
+on Windows. Many years ago, the founders of SIMPL were involved in a project
+where having a GUI residing on a PC running the Windows flavour of the month was
+part of the requirements. This Windows based PC was networked to embedded SBC's
+running Linux which babysat a number of devices through serial ports. The
+Windows PC acted as a front end and repository for data coming from the Linux
+hosts. SIMPL was a perfect fit for sending control messages to the Linux hosts
+and receiving data. Tcl was a very well known and ubiquitous high level language
+at the time and so a Tcl SIMPL interface was created to run on the Windows and
+communicate with the Linux SBC's that used the C SIMPL interface libraries. Tcl
+SIMPL uses no C code and therefore the need for the C SIMPL library was
+overcome. Later, the Tcl SIMPL code was ported to Python version 2. Again, there
+is no C code used in the Python/Tcl SIMPL module.
+
+So, what does that leave us with? Since you can probably run Tcl on anything
+you desire, you have a form of SIMPL, let's call it Tcl SIMPL, and the C SIMPL
+libraries, let us call that C SIMPL ... two sorts of SIMPL really. The Python
+Tcl SIMPL can run on Windows as well. No such port has been made for Java at
+this point simply because the main authors of SIMPL don't really like or use
+Java that much and prefer to work in C and Python.
+
+Forming a list, what we have is:
+1. C SIMPL for Linux/MACOSX/Unix etc.
+2. Python with a C SIMPL extension module.
+3. Python with a Python/Tcl SIMPL module.
+4. Tcl with Tcl SIMPL.
+5. Java using the C SIMPL library through JNI.
+
+Now, let's get back to Python. The history w.r.t. Python alone is as follows:
+1. Firstly, Python with C SIMPL extension library/module was called csimpl
+(csimplmodule.so.).
+2. Next, Python with a Tcl SIMPL module for version 2 called ssimpl.py.
+3. Then, 1. and 2. split into two separate modules each based on whether
+developers wanted to work from a "class/object" perspective or from a "library
+function" perspective.
+So, 	csimpl --> csimpl + wcsimpl
+And,	ssimpl --> ssimpl + wssimpl
+
+Yes, four different modules of Python SIMPL to be used depending on programming
+preferences and platforms. Confusing? We think so. Now, there are just two
+Python SIMPL modules, tclsimpl.py and csimpl.py, and as a programmer you may use
+whatever approach you are most comfortable with.
+
+
+*** see the book "Programming the SIMPL Way" by John Collins and Robert Findlay
+for a deeper explanation of SIMPL, surrogates, etc.

@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+#$Log: auxtest,v $
+#Revision 1.1  2007/07/24 20:34:25  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0007
+TEST_DESC="statemachine unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+echo "" | tee -a $OUTFILE
+echo "hit ctrl C to exit" | tee -a $OUTFILE
+echo "" | tee -a $OUTFILE
+
+cd $TEST_DIR/results
+tail -f junk
+
+echo "Test finished you can run posttest $TEST_NO for result"

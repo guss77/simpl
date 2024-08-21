@@ -1,0 +1,16 @@
+-----------------------------------------------
+ps0004: class_S Python receiver/sender, offset mode tclSurrogate unit test
+
+There are two SIMPL modules involved in this test:
+	1. receiverw.py
+	2. sender.py
+
+The receiverw.py script would usually be run on a
+Windows host. For our purposes, the host name is set
+within the receiverw.py program to be localhost so
+that the test can be run on a single Linux host.
+
+The receiverw.py is run in the background and the
+sender.py follows in the foreground.  The interaction
+is done via the tclSurrogate protocol.
+

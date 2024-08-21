@@ -1,0 +1,15 @@
+#! /bin/sh
+
+if [ $# -ne 1 ]; then
+	echo "Incorrect command line."
+	exit
+fi
+
+if [ $1 -eq 3 ]
+then
+	echo "python 3"
+	python3 -OO packAll1.py
+else
+	echo "python 2"
+	python -OO packAll1.py
+fi

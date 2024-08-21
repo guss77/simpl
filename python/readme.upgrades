@@ -1,0 +1,254 @@
+SIMPL and Python versions 2 and 3.
+==================================
+
+November 28, 2013.
+
+A Bit of History
+----------------
+
+The earliest SIMPL library/module for Python was originally written for Python
+version 2.0. This is referred to as a library/module because it was comprised of
+a C extension shared library which was imported into a Python script as a
+module. Despite continuing growth and change in the Python language, the SIMPL
+module continued to function correctly with very little change being necessary
+up until version 2.5.
+
+The Python/C extension library was developed on a Linux platform and references
+the original C-based SIMPL libraries. SIMPL was originally developed as a
+synchronous messaging system between C programs existing on the same host,
+intranet and/or internet networks. The idea to include Python based program
+support for SIMPL came about given the speed of development and simplicity of
+Python while performing arduous tasks such as writing a GUI ... ask anyone who
+has written straight X-windows.
+
+The sort of situation where this would be very valuable is exemplified by the
+sudoku SIMPL programs that are available. SIMPLy put, there is a Python program
+running in the foreground acting as a GUI. In the background there is a C
+program which receives input from the GUI, processes it and returns a result.
+The GUI displays a sudoku puzzle interface where the end user may enter values
+and then sends these values to the  C program  running in the background. The
+GUI then awaits a reply. If this reply is a solution to the puzzle, the solution
+is then displayed. This situation exploits the best of both languages. The
+Python GUI's ease of use and development and the power of C to crunch numbers.
+(Actually, Python is no slouch at crunching numbers either!) SIMPL forms the
+communications and control channel allowing these two disparate programs to
+cooperate with one and other.
+
+It should be stated for the sake of completeness that currently there exist
+SIMPL libraries/modules/etc. which support C, Tcl, Python and Java programming.
+Some of these various libraries came to be in order to solve certain technical
+issues and this will addressed next.
+
+It has been mentioned that the SIMPL C library was the first to exist and that
+it was developed on a Linux platform. With very little or no tweaking it was
+also found to operate correctly on Unix, MAC OS X, AIX, Solaris etc. platforms
+given that the SIMPL C library was written with POSIX standards in mind.
+
+However, there is an exception, Windows (of course). However, there is an effort
+being put into building a Cygwin compatible SIMPL library, thus allowing the C
+SIMPL libraries to run on Windows platforms.
+
+Nevertheless at this point in time, neither Python nor Java programs using the C
+SIMPL library are able to run on Windows since Python uses the C SIMPL library
+through its extension interface while Java uses it through its JNI (Java Native
+Interface) procedures.
+
+That really leaves us with Tcl. The Tcl SIMPL library is in its own way an
+entirely different sort of SIMPL. This works in a rather peculiar way that has
+its roots in history. Recall that it was pointed out that the C SIMPL library
+could not run on Windows and so could not be extended to Python or Java to run
+on Windows. Many years ago, the founders of SIMPL were involved in a project
+where having a GUI residing on a PC running the Windows flavour of the month was
+part of the requirements. This Windows based PC was networked to embedded SBC's
+running Linux which babysat a number of devices through serial ports. The
+Windows PC acted as a front end and repository for data coming from the Linux
+hosts. SIMPL was a perfect fit for sending control messages to the Linux hosts
+and receiving data. Tcl was a very well known and ubiquitous high level language
+at the time and so a Tcl SIMPL interface was created to run on the Windows and
+communicate with the Linux SBC's that used the C SIMPL interface libraries. Tcl
+SIMPL uses no C code and therefore the need for the C SIMPL library was
+overcome. Later, the Tcl SIMPL code was ported to Python version 2. Again, there
+is no C code used in the Python/Tcl SIMPL module.
+
+So, what does that leave us with? Since you can probably run Tcl on anything
+you desire, you have a form of SIMPL, let's call it Tcl SIMPL, and the C SIMPL
+libraries, let us call that C SIMPL. Two sorts of SIMPL really. The Python Tcl
+SIMPL can run on Windows as well. No such port has been made for Java at this
+point simply because the main authors of SIMPL don't really like or use Java
+that much and prefer to work in C and Python.
+
+Forming a list, what have is:
+1. C SIMPL for Linux/MACOSX/Unix etc.
+2. Python with a C SIMPL extension module.
+3. Python with a Python/Tcl SIMPL module.
+4. Tcl with Tcl SIMPL.
+5. Java using the C SIMPL library through JNI.
+
+Now, let's get back to Python. The history w.r.t. Python alone is as follows:
+1. Firstly, Python with C SIMPL extension library/module called csimpl
+(csimplmodule.so.)
+2. Next, Python with a Tcl SIMPL module for version 2 called ssimpl.py.
+3. Then, 1. and 2. split into two separate modules each based on whether
+developers wanted to work from a "class/object" perspective or from a "library
+function" perspective.
+So, 	csimpl --> csimpl + wcsimpl
+And,	ssimpl --> ssimpl + wssimpl
+
+Yes, four different modules of Python SIMPL to be used depending on programming
+preferences and platforms. Confusing? We think so.
+
+By the way, why bother keeping the C SIMPL stuff at all? Easy, it is much
+faster, well tested, and has a much greater capability than its Tcl/Python
+brother w.r.t. network communications through surrogates* (giving much greater
+versatility and ability to networked communications) as well as supporting a
+greater number of library calls. Moreover, C programs need it.
+
+Present Time
+============
+
+With the coming of Python version 3.* it has become necessary to port the Python
+SIMPL libraries/modules to support this new version. This seems a perfect
+opportunity to make all the other changes we think need to be made. Among these
+changes are the following:
+
+1. Modify Python SIMPL to support version 3.*.
+2. Modify Python SIMPL in such a way so as continue supporting version 2.*.
+3. Restrict the number of modules from four to two by modifying the modules to
+support SIMPL classes and/or straight function calls.
+4. Add documentation to be accessed via help().
+5. Construct a single pack()/unpack() function/method which absorbs all of the
+current functions such as packChar() and unpackLong() etc. while keeping the 
+current functions for backward compatibility and as an alternative way for 
+packing and unpacking messages.
+6. Redesign some of the algorithms with an eye to greater simplicity and
+efficiency.
+
+With all of the above in mind, we now have two Python SIMPL modules:
+
+1.csimpl.py
+
+This Python module utilizes the C extension shared libraries simpl2module.so and
+simpl3module.so. The required shared library, simpl2module.so or simpl3module.so
+is imported by the csimpl.py module depending on which version of the Python
+interpreter is being used at the time. That fact that there are two C shared
+libraries reflects the changes in how C extensions are constructed between
+Python versions 2.* and 3.*.
+
+2. tclsimpl.py
+
+The name merely reflects the origin of the original code and the use of the
+so-called tclSurrogate version of networked SIMPL rather than use of the usual
+TCP/IP surrogates*. There is no Tcl code involved.
+
+Both the csimpl.py and tclsimpl.py modules function with either Python version 2
+or Python version 3.
+
+csimpl.py contains more functionality than tclsimpl.py. It is also faster given
+the C extensions.
+
+Documentation/explanations have been added to both modules describing the use
+of the modules themselves and the class methods/functions contained within the
+modules.
+
+
+packMsg()/unpackMsg()
+=====================
+
+Both modules can now use the packMsg() and unpackMsg() functions to construct 
+outgoing and deconstruct incoming messages respectively. Both packMsg() and 
+unpackMsg() use a format string similar to the C function sprintf() and 
+scanf() respectively.
+
+The form of packMsg() is: packMsg(action, form, *args)
+The form of unpackMsg() is: arg1, arg2, arg3, ... argn = unpackMsg(action, form)
+
+The 'action' defines whether the message is binary or character based. For 
+example, packing a message that is going to be sent to a C program would be best 
+sent as binary because that is the format best understood by a C program. 
+
+The 'form' is the type of C datum to be packed into the message. The available
+format letters are and correspond to:
+b - an unsigned byte/boolean
+c - an unsigned 8-bit character
+h - a signed short integer
+i - an signed integer
+l - a signed long integer
+f - a floating point number
+d - a double precision floating point number
+s - a byte character string/single dimensional array of bytes
+H - a single dimensional array of signed short integers
+I - a single dimensional array of signed integers
+L - a single dimensional array of signed long integers
+F - a single dimensional array of floating point numbers
+D - a single dimensional array of double precision floating point numbers
+
+Note that the form 'b' is new. It was created to handle situations where each 
+bit is examined (0/1) for its respective state and has compatibility with the
+bitwise operations like & and |.
+
+The older packing/unpacking functions have been retained for reasons of 
+backward compatibility and clarity: sometimes it is clearer how a message is 
+being packed/unpacked by a number of separate calls rather than by one 
+humongous call, especially if the message is long and complex.
+
+The older packing functions are:
+packByte()
+packChar()
+packShort()
+packInt()
+packLong()
+packFloat()
+packDouble()
+packString()
+
+packShortArray()
+packIntArray()
+packLongArray()
+packFloatArray()
+packDoubleArray()
+
+The older unpacking functions are:
+unpackByte()
+unpackChar()
+unpackShort()
+unpackInt()
+unpackLong()
+unpackFloat()
+unpackDouble()
+unpackString()
+unpackShortArray()
+unpackIntArray()
+unpackLongArray()
+unpackFloatArray()
+unpackDoubleArray()
+
+Note: packCharArray() and unpackCharArray() have been removed due to being
+redundant with packString() and unpackString().
+
+Example 1
+---------
+str = "We are the knights who say neee!"
+packMsg(BIN, "s", str)
+
+Note that there is no need to tell Python how long str is, it already knows.
+
+Example 2
+---------
+a = unpackMsg(BIN, "32s")
+
+where this will unpack the message used as an example with packMsg(). In this 
+case though, you need to tell Python how long the string is expected to be 
+since the message has come from another program. print(a) will display "We are 
+the knights who say neee!"
+
+BIN and CHR
+===========
+
+The BIN and CHR which are found as the first arguments in the pack/unpack
+methods/functions indicate how the data to be packed/unpacked is to formatted
+relative to memory boundaries. BIN is for binary and CHR is for character or
+text-based formatting. For example, when sending a message to a C receiver one
+would use BIN because that is how the C receiver will naturally unpack the said
+message by most likely using a binary structure template of the message. As
+another example, sending a message to a Python receiver could be either BIN or
+CHR as long as the receiver knows ahead what to expect.

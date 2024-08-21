@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+#$Log: linktest,v $
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+TEST_DIR=$TEST_HOME/testing
+
+# usage
+function usage
+{
+echo;
+echo "================ linktest ==================";
+echo "   forge symbolic links to RCS'd test files";
+echo;
+echo "   linktest <test#>";
+echo "   eg.";
+echo "        linktest 39";
+echo "   will create a new links for test39"
+echo "================= done ====================";
+echo;
+}
+
+
+if [ $# = 0 ]
+then
+	usage
+else
+	if [ ! -d $TEST_DIR/test$1 ]
+	then
+		echo $TEST_DIR/test$1 does not yet exist
+		echo Will create it for you
+		mkdir $TEST_DIR/test$1
+		mkdir $TEST_DIR/test$1/scripts
+		mkdir $TEST_DIR/test$1/data
+		mkdir $TEST_DIR/test$1/results
+	fi
+
+	echo "linking test$1"
+	cd $TEST_DIR/test$1; xln all
+	cd $TEST_DIR/test$1/scripts; xln all
+	cd $TEST_DIR/test$1/data; xln all
+	echo "done"
+	echo "============================================"
+fi

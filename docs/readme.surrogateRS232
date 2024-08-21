@@ -1,0 +1,151 @@
+/***********************************************************************
+
+FILE:			readme.surrogateRS232
+
+DATE:			09 Jan 22
+
+DESCRIPTION:	Description of how to use the simpl surrogate that
+				enables remote message passing based on RS-232.
+
+NOTE:			tabs = 4 for this file.
+				This description is taken from a copy of the TCP/IP
+				surrogate readme.
+
+REVISIONS:
+$Log: readme.surrogateRS232,v $
+Revision 1.1  2009/01/23 14:28:20  johnfcsoft
+initial commit
+
+
+***********************************************************************/
+
+Introduction
+============
+
+In order for a sending program to pass a message to a remotely based
+receiving program some form of networking bridge is necessary. In
+principle, this bridge could be anything. In this particular case we
+are going to discuss this bridge by way of using an existing RS-232
+based solution as an example.
+
+Background
+==========
+
+Take a typical sender program. This is a C program which desires to 
+send a message of some form or other to another C program which will 
+receive it, process it and then reply back accordingly. We will refer to
+these two programs as sender and receiver respectively. In order to
+accomplish this messaging the sender merely has to make a name_locate()
+call. This call is covered in the simpl-function.synopsis. As an example
+consider the following C code snippet:
+
+// sender.c - the sender program
+
+int ret;
+	.
+	.
+	.
+
+ret = name_locate("server:receiver");
+	.
+	.
+	.
+
+Let's examine the name_locate() call. The return value ret will be 0 or
+-1 indicating either success or failure.
+
+In the case of a failure, the _simpl_errno is set and the nature of the 
+error can be best understood from a call to whatsMyError(). This call is
+also described in the file simpl-function.synopsis.
+
+In the case of success, the name_locate() call has managed to cause the
+building of a software bridge from the local host to the remote host called
+server and its resident receiver program.
+
+This software bridge gives the appearance to the local sender that it is
+sending a message to a local receiver. In fact, it is. The remote receiver is
+functionally replaced by another program which we call a surrogate receiver. So
+the local sender sends his message to the local surrogate receiver. On the
+remote host, the program receiver thinks that it is receiving messages from a
+sender based on the same host. Again, it does. This is because a surrogate
+sender has been started up there and its this surrogate sender that actually
+sends the message to the receiver.
+
+The local surrogate receiver uses local SIMPL to send messages to the
+local rs232_rw program. This rs232_rw program is RS-232 connected to the
+remoe host which also has a copy of rs232_rw running. The rs232_rw on the
+remote host sends messages to the surrogate sender on the remote host.
+
+So, the total picture looks like this:
+1. The local sender sends his message to the surrogate receiver.
+2. The surrogate receiver sends the message to the local rs232_rw program.
+3. The rs323_rw program forwards the message to the remote rs232_rw program
+running on the remote host.
+4. The remote rs232_rw program sends the message to the surrogate sender.
+5. The remote surrogate sender sends the message to the receiver.
+6. The receiver processes the message and replies back to the surrogate sender.
+7. The surrogate sender sends the message to the rs232_rw program.
+8. The rs232_rw prohram then RS-232 writes the message back  to the local
+rs232_rw program.
+9. The rs232_rw program sends the message to the local surrogate receiver.
+10. The surrogate receiver then replies back to the local sender.
+
+If you are familiar with the TCP/IP surrogate process, you can see that the
+rs232_rw interaction takes the place of the TCP/IP.
+
+Alternate host-host Protocols
+==============================
+
+See readme.surrogateTCP.
+
+Usage
+=====
+
+In order to run all of this, the protocol router, surrogateRS232, and rs232_rw
+programs must be up and running. It is usually convenient to start them
+from a script at computer start up.
+
+~/simpl/bin/protocol_router &
+~/simpl/bin/rs232_rw &
+~/simpl/bin/surrogateRS232 &
+
+Command Line Arguments
+======================
+
+protocol_router takes no arguments.
+
+rs232_rw can take a number of arguments, they are:
+
+rs232_rw -i intWidth -s serialPort -v
+
+intWidth: this is the byte-width of the host box's CPU. In the case
+of a 32-bit processor we have 4 bytes. The default is 4 bytes. This
+is used when converting from binary to a char-based message structure.
+
+serialPort: the serial port to read from/write to. The default is /dev/ttyS0.
+
+v: is the verbosity and it is boolean.
+
+surrogateRS232 can take a number of arguments, they are:
+
+surrogateRS232 -i intWidth -k kaTimeout -n nameLocateTimeout
+
+intWidth: this is the byte-width of the host box's CPU. In the case
+of a 32-bit processor we have 4 bytes. The default is 4 bytes. This
+is used when converting from binary to a char-based message structure.
+See below "Homogeneous vs. Heterogeneous Networks".
+
+kaTimeout: is the time between keep alive requests being sent. It is
+measured in seconds and if set to zero, the keep alive mechanism is
+de-activated. It is 0 seconds (de-activated) by default. 
+
+nameLocateTimeout: is the time allowed before a name locate times out and
+fails. It is 10 seconds by default.
+
+Example start up:
+
+protocol_router &
+surrogateRS232 -k10 -n120 &
+
+In this case, the keep alive mechanism will fire a keep alive every 10 seconds
+and 120 seconds is acceptable before failing on a name_locate() call.

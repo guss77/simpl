@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2007/07/24 20:34:24  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0005
+TEST_DESC="scheduler unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+echo "" | tee -a $OUTFILE
+echo "This may take a while to complete ... please wait" | tee -a $OUTFILE
+echo "" | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/scheduler/bin
+cksum scheduler | tee -a $OUTFILE
+scheduler -n SCHEDULER -l LOGGER &
+
+sleep 1
+
+cksum agent | tee -a $OUTFILE
+agent -n AGENT -a SCHEDULER -l LOGGER -d 10 &
+
+cksum requestor | tee -a $OUTFILE
+requestor -n REQUESTOR -a SCHEDULER -l LOGGER
+
+fcslay AGENT
+fcslay SCHEDULER
+fcslay LOGGER
+echo "Test finished you can run posttest $TEST_NO for result"

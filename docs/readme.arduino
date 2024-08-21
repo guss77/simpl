@@ -1,0 +1,36 @@
+================================================================================
+readme.arduino
+================================================================================
+
+Here is a procedure to get Arduino-SIMPL library installed.
+
+--------------------------------------------------------------------------------
+
+FCsoftware Inc. 2013
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+--------------------------------------------------------------------------------
+
+Assuming,
+1. your SIMPL distribution has been installed at /simplPath/,
+ie. something like /home/simpl/, and
+2. your arduino package has been installed at /ardPath/,
+ie. something like /user/share/arduino-1.0.5/.
+
+Now,
+1. go to /ardpath/libraries
+cd /ardpath/libraries
+
+2. make a symbolic link in the /ardPath/libraries directory to the simpl
+arduino library directory,
+ln -s /simplPath/arduino/Simpl Simpl
+
+You should now be able to access and use the simpl library developed the
+arduino.
+
+Note the examples which are a good place to start in order to see how
+simpl works for arduino. Be sure to look over the readme's in the examples
+directories.
+

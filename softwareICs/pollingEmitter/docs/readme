@@ -1,0 +1,49 @@
+Polling Emitter Software IC
+________________________________
+
+To operate this emitter softwareIC you'll need three
+consoles.
+
+On the first console you'll need to startup the main portion of
+test s0004 by typing:
+
+	dotest s0004
+	-> 
+
+On the second console you'll need to open up the data file which 
+is being polled in your favorite editor: 
+
+	cd $TEST_HOME/tests0004/data
+	vi bob.dat
+
+On the third console you'll need to open up the and tail the trace
+log file:
+
+	cd $TEST_HOME/tests0004/results
+	tail -f junk
+
+If all goes well you should see the time stamp on the file being polled
+every second.   
+
+If you make changes to the second line in the data file on console #2
+and commit those changes,  the emitter should pickup the data and emit it
+to the queueSim process and you should see the string appear on your
+first console.
+
+The emitter isn't in constant communication with the queue so another 
+shared memory mechanism is used to signal the emitter to "call home"
+
+This is kicked by typing
+
+	-> c hello
+	->
+
+at console 1
+
+The emitter should call home and the string you typed after the "c" above
+should be Reply()'d back to the emitter and displayed in the trace log.
+
+As always if you notice bugs or make any improvements be sure to contact
+us on the SIMPL project mailing list.
+
+the SIMPL developers

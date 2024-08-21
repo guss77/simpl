@@ -1,0 +1,37 @@
+Scheduler Software IC
+______________________________________________________
+
+To operate this scheduler softwareIC you'll need two
+consoles.
+
+On the first console you'll need to startup the main portion of
+test s0005 by typing:
+
+	dotest s0005
+	-> d 30 hi
+	-> w 45 hello
+	-> s 55 bye
+	->
+
+On the second console you'll need to startup the auxillary portion of
+test s0005 by typing:
+
+	auxtest s0005
+	-> s
+	->
+
+If all goes well you should see the list of scheduled messages which were
+created with the d (DAILY),  w (WEEKLY) and s (SINGLE SHOT) commands on you
+auxillary screen.
+
+The scheduler is currently running on a 10 sec clock tick and once the 
+message expires it will be transmitted to the agent process.  You'll have
+to examine the trace log to see that the text of these messages is transmitted
+correctly. The trace log can be found at:
+
+	$TEST_HOME/tests0005/results/junk
+
+As always if you notice bugs or make any improvements be sure to contact
+us on the SIMPL project mailing list.
+
+the SIMPL developers

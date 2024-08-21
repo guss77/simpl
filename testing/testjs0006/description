@@ -1,0 +1,12 @@
+-----------------------------------------------
+js0006: Java Ssimpl offset pack/unpack test
+
+This test examines the veracity of the packing and unpacking methods with
+respect to an offset placing in the message memory arrangement. Each variable
+is read from/written to the desired offset within the message. This can be
+useful for reading/writing only one or two data items within a message rather
+than having to read/write all of the message elements when you are only
+interested in some. The packing/unpacking methods cover all java primitive forms
+and one dimensional arrays.
+
+These methods are contained in the class called Ssimpl.

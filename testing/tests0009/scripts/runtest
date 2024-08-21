@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2008/12/17 15:42:33  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0009
+TEST_DESC="relay unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/relay/bin
+cksum relay | tee -a $OUTFILE
+relay -n BOBY -l LOGGER &
+
+sleep 1
+
+cksum receiverSim | tee -a $OUTFILE
+receiverSim -n BOBR -r BOBY -l LOGGER -b&
+
+cksum relayStim | tee -a $OUTFILE
+relayStim -n BOBS -r BOBY -l LOGGER
+
+fcslay BOBR
+fcslay BOBY
+fcslay LOGGER
+
+echo "Test finished you can run posttest $TEST_NO for result"

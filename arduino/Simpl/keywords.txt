@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For Simpl
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+nameAttach	KEYWORD2
+nameDetach	KEYWORD2
+nameLocate	KEYWORD2
+Send	KEYWORD2
+Receive	KEYWORD2
+Reply	KEYWORD2
+whatsMyError	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

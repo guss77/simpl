@@ -1,0 +1,15 @@
+Source: simpl
+Section: Development
+Priority: optional
+Maintainer: Paul Corner <paul_c@users.sourceforge.net>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: simpl
+Architecture: i386
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Simple interprocess communications library
+ Send/Receive/Reply messaging, popularized in commericial RTOS's such as QNX,
+ is intuitive and simple to understand and an immensely powerful way of
+ designing distributed software applications. This project aims to bring these
+ tools to Linux.

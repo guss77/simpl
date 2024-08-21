@@ -1,0 +1,17 @@
+#!/bin/sh
+
+TEST_NO=js0005
+TEST_DESC="Java Ssimpl character pack/unpack test"
+
+export PYTHONPATH=$PYTHONPATH:$SIMPL_HOME/modules
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/java/test/S
+
+runSpack2 | tee -a $OUTFILE

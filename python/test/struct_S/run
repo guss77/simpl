@@ -1,0 +1,14 @@
+#! /bin/sh
+
+$SIMPL_HOME/bin/tclSurrogate -n SURRO -p 50000 &
+
+sleep 1
+
+python receiver.py &
+
+sleep 1
+
+python sender.py
+
+fcslay RECEIVER
+fcslay SURRO

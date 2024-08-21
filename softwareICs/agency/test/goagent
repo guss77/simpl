@@ -1,0 +1,16 @@
+echo starting agency unit test
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > junk &
+
+cd $SIMPL_HOME/softwareICs/agency/bin
+agency -n BOBA -l LOGGER &
+
+sleep 1
+agent -n BOBG -a BOBA -l LOGGER -d 10 &
+requestor -n BOBR -a BOBA -l LOGGER
+
+echo stopping agency unit test
+slay agent
+slay agency
+slay fclogger

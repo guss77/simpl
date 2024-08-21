@@ -1,0 +1,24 @@
+#!/bin/sh
+
+TEST_NO=ps0010mc
+TEST_DESC="mod_C Python receiver, Python sender, offset mode unit test"
+
+export PYTHONPATH=$PYTHONPATH:$SIMPL_HOME/modules
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/python/test/mod_C
+python receiverCoffset.py &
+
+sleep 2
+
+python senderCoffset.py
+
+fcslay RECEIVER_O
+
+echo "Test finished you can run posttest $TEST_NO for result"

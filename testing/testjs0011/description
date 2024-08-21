@@ -1,0 +1,12 @@
+-----------------------------------------------
+js0011: Java Ssimpl java-receiver/C-sender binary message test
+
+This test consists of a local C sender program exchanging a binary-type message
+with a local java receiver program. The C sender is running locally for
+convenience only. It is actually communciating with the java receiver via the
+tclSurrogate. The tclSurrogate allows the sender to be running on another host
+but for our purposes, the host setting is localhost, hence communications
+occur via sockets through the loopback interface.
+
+The methods used in the java receiver program are contained in the class called
+Ssimpl.

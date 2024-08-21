@@ -1,0 +1,9 @@
+echo starting receiverSim for broadcaster unit test
+
+if [ $# = 1 ]
+then
+	cd $SIMPL_HOME/softwareICs/bin
+	receiverSim -n $1 -f BOBI -l LOGGER
+else
+	echo "need to supply SIMPL name as argument"
+fi

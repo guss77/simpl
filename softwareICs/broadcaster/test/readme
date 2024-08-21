@@ -1,0 +1,55 @@
+The fcMgr/fcBroadcaster together form a broadcaster softwareIC.
+
+The fcMgr is the receiver portion.  fcBroadcaster is the sender portion.
+
+In addition a receiverSim and senderStim applications are provided for
+unit testing the broadcaster IC.
+
+======================================
+How to run broadcaster unit testing.
+======================================
+
+You will need several consoles for this test.
+
+-------------
+
+On console 1 logged into $SIMPL_HOME/softwareICs/broadcaster/test
+type
+	gobroad
+
+This will startup the fcMgr/fcBroadcaster pair. 
+
+You can terminate this script with a <ctrl C>.
+
+-------------
+
+On console 2 logged into $SIMPL_HOME/softwareICs/broadcaster/test
+type
+	gorecv BOBS
+
+This will startup an receiverSim process named BOBS.
+
+You can have multiple instances of this script.  To terminate this
+script with a <ctrl C>.
+
+-------------
+
+On console 3 logged into $SIMPL_HOME/softwareICs/broadcaster/test
+type
+	gosend
+
+This will startup the senderStim process.
+
+-------------
+
+From Console 2
+r - REGISTER  
+	- this will register this receiverSim for broadcast.
+
+You should see the registration sequence happening at this point.
+
+From Console 3
+t <str> - send test string 
+
+You should see the TEST sequence happening at this point including
+a broadcast to the receiverSim.

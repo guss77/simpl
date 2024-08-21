@@ -1,0 +1,25 @@
+#!/bin/sh
+
+TEST_NO=ps0008mc
+TEST_DESC="mod_C C receiver, Python sender, binary mode unit test"
+
+export PYTHONPATH=$PYTHONPATH:$SIMPL_HOME/modules
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/python/bin
+receiver &
+
+sleep 1
+
+cd $SIMPL_HOME/python/test/mod_C
+python senderCbinary.py
+
+fcslay RECEIVER_B
+
+echo "Test finished you can run posttest $TEST_NO for result"

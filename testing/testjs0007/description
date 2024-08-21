@@ -1,0 +1,8 @@
+-----------------------------------------------
+js0007: Java Jsimpl java-receiver/C-sender binary message test
+
+This test consists of a local C sender program exchanging a binary-type message
+with a local java receiver program.
+
+The methods used in java receiver program are contained in the JNI library which
+are defined in the class called Jsimpl.

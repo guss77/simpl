@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+#$Log: auxtest,v $
+#Revision 1.1  2008/12/17 15:51:34  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0010
+TEST_DESC="agency unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+echo "Test finished you can run posttest $TEST_NO for result"

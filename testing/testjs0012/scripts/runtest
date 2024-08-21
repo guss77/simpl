@@ -1,0 +1,15 @@
+#!/bin/sh
+
+TEST_NO=js0012
+TEST_DESC="Java Ssimpl java-receiver/Jsimpl java-sender binary message test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/java/test/S
+
+run2 | tee -a $OUTFILE

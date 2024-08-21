@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+#$Log: setup,v $
+#Revision 1.1  2007/07/24 20:34:24  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0005
+TEST_DESC="scheduler unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+DATA_DIR=$TEST_DIR/data
+
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+#
+# bulk of pretest script goes here
+#
+
+echo "Test $TEST_NO setup finished"

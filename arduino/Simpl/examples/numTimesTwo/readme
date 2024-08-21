@@ -1,0 +1,60 @@
+================================================================================
+readme for the numTimesTwo arduino/SIMPL example
+================================================================================
+
+FCsoftware Inc. 2013
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+--------------------------------------------------------------------------------
+
+This example is comprised of an ardunio board with ethernet shield connected to
+the internet. The arduino sends a long integer (32-bit) to a receiver program
+running on the icanprogram host. This SIMPL receiver then doubles the number
+and replies the result back to the arduino. A copy of the SIMPL receiver
+program which resides on the icanprogram host can be found in
+./remoteReceiver/src.
+
+Note that the number sent by the arduino is a long int because the arduino is a
+32-bit device. The number in the receiver.c program is indicated merely as an
+int because the icanprogram host where it resides is a 64-bit machine. Be
+careful matching data items between different devices!
+
+It is assumed that your host computer has the arduino and the SIMPL packages
+installed and configured correctly. It is also assumed that your host has
+internet connectivity.
+
+*** You will have to copy the numTimesTwo.ino file into your sketchbook
+directory.
+
+1. Bring up the file numTimesTwo.ino in the arduino interface. Edit the line
+defining the MAC address for the ethernet shield to the one on your chip. The
+line of interest is around line 27.
+
+2. Compile numTimesTwo.ino via the arduino interface.
+
+3. Upload the image file to the arduino.
+
+4. Open the serial monitor in order to observe feedback from the arduino.
+
+5. If you see "Initialization is complete." then the arduino has successfully
+SIMPL name attached on the icanprogram server. If not, there is a network issue
+to be dealt with. It may take thirty seconds depending on the network: Be
+patient.
+
+What you should see via the serial monitor is:
+
+sent "n"
+received "2n"
+
+in loop running numbers from 1-100 and getting back 2-200.
+
+The message will come from numTimesTwo.ino, sent through the internet to the
+tclSurrogate on the icanprogram host where the C SIMPL receiver program is
+running. The receiver program will double the number and reply the result back
+to the arduino via the tclSurrogate and the internet. The arduino will display
+the result via the serial monitor.
+
+The purpose of these little programs is to demonstrate how the arduino can SIMPL
+message over a network as a SIMPL sender.

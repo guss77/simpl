@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2008/12/17 15:50:22  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0011
+TEST_DESC="courier unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/courier/bin
+cksum receiverSim | tee -a $OUTFILE
+receiverSim -n BOBR -l LOGGER -b&
+
+cksum courier | tee -a $OUTFILE
+courier -n BOBC -g BOBG -l LOGGER &
+
+cksum guiSim | tee -a $OUTFILE
+guiSim -n BOBG -r BOBR -l LOGGER
+
+fcslay BOBR
+fcslay BOBC
+fcslay LOGGER
+
+echo "Test finished you can run posttest $TEST_NO for result"

@@ -1,0 +1,10 @@
+ADD
+DOOR
+ID: 43
+opentime: 30 sec
+Z
+OVERWRITE
+DOOR
+ID: 21
+opentime: 15 sec
+Z

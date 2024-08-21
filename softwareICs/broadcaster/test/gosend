@@ -1,0 +1,4 @@
+echo starting senderStim for broadcaster unit test
+
+cd $SIMPL_HOME/softwareICs/bin
+senderStim -n BOBD -f BOBI -l LOGGER

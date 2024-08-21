@@ -1,0 +1,12 @@
+echo starting broadcaster unit test
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > junk &
+
+cd $SIMPL_HOME/softwareICs/bin
+fcBroadcaster -n BOBB -f BOBI -l LOGGER &
+fcMgr -n BOBI -l LOGGER
+
+echo stopping broadcaster unit test
+slay fclogger
+slay fcBroadcaster

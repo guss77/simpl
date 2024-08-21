@@ -1,0 +1,8 @@
+-----------------------------------------------
+ps0002: class_S C receiver, Python sender, binary mode tclSurrogate unit test
+
+The senderw.py script would usually be run on a
+Windows host. For our purposes, the host name is set
+within the senderw.py program to be localhost so
+that the test can be run on a single Linux host.
+

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+TEST_NO=ps0006
+TEST_DESC="Python-SIMPL unit test"
+
+export PYTHONPATH=$PYTHONPATH:$SIMPL_HOME/modules
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/python/test/class_C
+python packCtest2.py
+
+echo "Test finished you can run posttest $TEST_NO for result"

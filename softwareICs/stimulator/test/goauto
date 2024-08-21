@@ -1,0 +1,4 @@
+echo starting automatic stimulator unit test
+
+cd $SIMPL_HOME/softwareICs/stimulator/bin
+recvTester -n BOBT -s BOBS -f test_001 -l LOGGER

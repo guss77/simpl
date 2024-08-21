@@ -1,0 +1,43 @@
+Agency SIMPL softwareIC.
+
+There are 3 processes involved in this demo of the agency IC.
+	agency - the main agency code including queue
+	requestor - the process which sends to agency
+	agent - the process which handles message
+
+======================================
+How to run agency unit testing.
+======================================
+
+You will need one console logged onto 
+
+	$SIMPL_HOME/softwareICs/agency/test
+
+for this test.
+
+You will need to run the startup script:
+
+	goagent
+
+This will startup the following processes:
+	fclogger - trace logger
+	agency
+	agent
+	requestor
+
+You can terminate this script with a <ctrl C> or by entering "q" at the
+-> requestor prompt.
+
+At the -> requestor prompt you can try entering the following 
+-> ?   - this will display all the requestor UI options
+-> t hi - this will send this message to the agency and on to the agent
+-> q - this will cause the requestor to terminate gently
+
+NOTE:
+The goagent startup script has a built in delay of 10 secs assigned to the
+agent process.  This will force any requestor messages within the first 10
+seconds to exercise the queue logic in the agency.
+
+NOTE2:
+The trace logger output is being dumped into a file called
+	$SIMPL_HOME/bin/junk

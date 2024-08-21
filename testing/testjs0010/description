@@ -1,0 +1,8 @@
+-----------------------------------------------
+js0010: Java Jsimpl java-sender/java-receiver offset message test
+
+This test consists of a local java sender program exchanging an offset-type
+message with a local java receiver program.
+
+The methods used in java programs are contained in the JNI library which are
+defined in the class called Jsimpl.

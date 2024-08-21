@@ -1,0 +1,88 @@
+-------------------------
+FCsoftware Inc. 1999, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+===================================
+How to build the rtInterface example.
+===================================
+This makes the assumption that you have already downloaded and
+installed the SIMPL code.  
+
+It also makes the assumption that you have downloaded the RTLinux 1.1
+and installed it.
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$FC_HOME. ie:
+	cd $FC_HOME
+	cd ..
+	tar -xvf <tarballname>
+
+2) build the rtInterface executables
+	cd $FC_HOME/examples/rtInterface/src
+	make clobber
+	make install
+
+This will place two executables in $FC_HOME/examples/bin
+	$FC_HOME/examples/bin/rtStim
+	$FC_HOME/examples/bin/showThis
+
+It will also copy two shell scripts to $FC_HOME/examples/bin
+	$FC_HOME/examples/bin/go
+	$FC_HOME/examples/bin/go1
+
+It will also place one RTLinux module in $FC_HOME/examples/modules
+	$FC_HOME/examples/modules/rt_process.o
+
+"rtStim" will be the process which sends messages to the "rt_process"
+module.  These messages will be used to start and stop a period RT task.
+
+"showThis" will be the process which receives messages from the "rt_process"
+module.  These will consist of startup info plus a heartbeat message every
+5 seconds.
+
+===================================
+How to run the rtInterface example
+===================================
+For this you will need to open 3 consoles (or Xterm windows).
+
+on Console 1: logged into $FC_HOME/bin
+
+	fclogger -n LOGGER   
+	(or fclogger -n LOGGER > junk   to redirect trace log to a file)
+	where
+		LOGGER - name given to the trace logger process
+
+on Console 2: logged into $FC_HOME/examples/bin
+
+	go
+(ctrl C will exit from this and do cleanup)
+
+on console 3: logged into $FC_HOME/examples/bin
+
+	go1
+
+	A prompt for a command will appear:
+		Enter command:
+for a list of possible commands you can enter ?
+
+To run this little example type each of the follow commands in sequence
+and examine the output of the trace logger on console 1 BETWEEN each.
+
+	Enter command: g
+wait some time (at least 10 seconds) ... you can flip over to console 1
+(where fclogger was run) to view the heartbeat message  
+
+	Enter command: h
+	Enter command: q
+
+What we are doing is causing a START_STOP_TASK_MSG to be sent from 
+"rtStim" -> "rt_process".  This message will then start a periodic rt task
+to start running (see fun() in rt_process.c).  Every 5 seconds this periodic 
+task will send a KICK_YOU_MSG from "rt_process" -> "showThis".   When 
+"showThis" gets the message it logs to the trace logger.
+
+Have fun.

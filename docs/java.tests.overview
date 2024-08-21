@@ -1,0 +1,145 @@
+======================================
+readme.java
+======================================
+$Log: java.tests.overview,v $
+Revision 1.1  2009/05/05 17:14:24  johnfcsoft
+initial entry
+
+Revision 1.1  2009/05/04 18:24:48  johnfcsoft
+inital entry
+
+======================================
+
+This is a brief description of the SIMPL-java tests. A more detailed
+description can be found in each test's directory in the file aptly called
+"description".
+
+Each particular test is containbed within its own directory such as testjs0001.
+The naming convention is such that it is a test, it concerns some aspect of
+java-simpl (js) and the test number is 0001 in this case.
+
+Two java-simpl object types are available, viz. Jsimpl and Ssimpl.
+
+Jsimpl is JNI (Java Native Interface) based code. This means that C language
+functions underlie the Jsimpl object methods. Jsimpl would be the natural choice
+for hosts that are NOT windows such as UNIX, QNX, Linux, Solaris, MAC OS X and
+so on. Jsimpl stands alone for local SIMPL communications and works seamlessly
+with the varous surogates available.
+
+Ssimpl is written entirely in java. It is for use use with networks where some
+of the hosts are windows based. For example, a windows host running a java
+program which sends/receives messages from a Linux host running a
+C/java/python/tcl etc. program. This requires the presence of the tclSurrogate
+running on the Linux host in this particular case.
+
+
+Tests js0001-js0003 test the packing/unpacking methods within Jsimpl.
+Tests js0004-js0006 test the packing/unpacking methods within Ssimpl.
+Tests js0007-js0010 test Jsimpl communication scenarios.
+Tests js0001-js0018 test Ssimpl communication scenarios.
+
+The tests are listed as follows:
+
+js0001
+======
+
+Tests the packing/unpacking Jsimpl methods associated with
+constructing/deconstructing a binary-type message. Binary type messages are
+those that may have additional space padding within them for compatibility with
+such things as C structures.
+
+js0002
+======
+
+Tests the packing/unpacking Jsimpl methods associated with
+constructing/deconstructing a character-type message. Character type messages
+are those where the data items within the message are simply concatenated
+together. An XML message would be of this sort.
+
+js0003
+======
+
+Tests the packing/unpacking Jsimpl methods associated with
+constructing/deconstructing an offset-type message. Offset type messages
+are those where the put/get methods are overloaded with an offset integer. This
+tells the pack/unpacker the put/get the relevant data item to/from that
+particular offset from the start of the message. This is useful to a program
+that is only interested in one or two items within a particular message.
+
+js0004
+======
+
+Same as js0001 but for Ssimpl objects.
+
+js0005
+======
+
+Same as js0002 but for Ssimpl objects.
+
+js0006
+======
+
+Same as js0003 but for Ssimpl objects.
+
+
+js0007
+======
+
+Tests binary messaging between a Jsimpl java receiver and a C sender.
+
+js0008
+======
+
+Tests binary messaging between a Jsimpl java sender and a C receiver.
+
+js0009
+======
+
+Tests character messaging between a Jsimpl java sender and a java receiver.
+
+js0010
+======
+
+Tests offset messaging between a Jsimpl java sender and a java receiver.
+
+js0011
+======
+
+Tests binary messaging between a Ssimpl java receiver and a C sender.
+
+js0012
+======
+
+Tests binary messaging between a Ssimpl java receiver and a Jsimpl java sender.
+
+js0013
+======
+
+Tests character messaging between a Ssimpl java receiver and a Jsimpl java
+sender.
+
+js0014
+======
+
+Tests offset messaging between a Ssimpl java receiver and a Jsimpl java sender.
+
+js0015
+======
+
+Tests binary messaging between a Ssimpl java sender and a C receiver.
+
+js0016
+======
+
+Tests binary messaging between a Ssimpl java sender and a Jsimpl java receiver.
+
+js0017
+======
+
+Tests character messaging between a Ssimpl java sender and a Jsimpl java
+receiver.
+
+js0018
+======
+
+Tests offset messaging between a Ssimpl java sender and a Jsimpl java receiver.

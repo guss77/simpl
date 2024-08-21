@@ -1,0 +1,5 @@
+#! /bin/sh
+
+CLASSPATH=../../class
+
+java -classpath $CLASSPATH PackStest1

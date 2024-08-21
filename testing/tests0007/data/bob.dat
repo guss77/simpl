@@ -1,0 +1,21 @@
+RESET
+DOOR
+Z
+
+ADD
+DOOR:
+ID: 21
+opentime: 10 sec
+Z
+
+ADD
+WINDOW:
+blah: blah
+Z
+
+ADD
+DOOR:
+ID: 42
+opentime: 20 sec
+Z
+

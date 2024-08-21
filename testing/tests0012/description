@@ -1,0 +1,9 @@
+-----------------------------------------------
+Test s0012: broadcaster softwareIC unit test
+
+$Log: description,v $
+Revision 1.1  2008/12/17 15:48:16  bobfcsoft
+new file
+
+
+This test runs the broadcaster unit test.

@@ -1,0 +1,61 @@
+Jsimpl Methods
+=============
+
+// constructor 1 - run on defaults
+Jsimpl()
+// constructor 2 - set everything needed
+Jsimpl(int iSize, int oSize)
+
+// various packing/unpacking utility methods
+public int getInBufferSize()
+public int getOutBufferSize()
+public int getOutSizeAvailable()
+
+//	packing methods
+public int packByte(byte p, int offset)
+public int packChar(char p, int offset)
+public int packShort(short p, int offset)
+public int packInt(int p, int offset)
+public int packLong(long p, int offset)
+public int packFloat(float p, int offset)
+public int packDouble(double p, int offset)
+public int packString(String p, int offset)
+public int packByteArray(byte[] p, int offset)
+public int packCharArray(char[] p, int offset)
+public int packShortArray(short[] p, int offset)
+public int packIntArray(int[] p, int offset)
+public int packLongArray(long[] p, int offset)
+public int packFloatArray(float[] p, int offset)
+public int packDoubleArray(double[] p, int offset)
+
+//	unpacking methods
+public byte unpackByte(int offset)
+public char unpackChar(int offset)
+public short unpackShort(int offset)
+public int unpackInt(int offset)
+public long unpackLong(int offset)
+public float unpackFloat(int offset)
+public double unpackDouble(int offset)
+public String unpackString(int p, int offset)
+public int unpackByteArray(byte[] p, int offset)
+public int unpackCharArray(char[] p, int offset)
+public int unpackShortArray(short[] p, int offset)
+public int unpackIntArray(int[] p, int offset)
+public int unpackLongArray(long[] p, int offset)
+public int unpackFloatArray(float[] p, int offset)
+public int unpackDoubleArray(double[] p, int offset)
+public static native void printTester(int type);
+
+// SIMPL methods
+public native int nameAttach(String name);
+public native int nameDetach();
+public native int surDetach(int fd);
+public native int nameLocate(String name);
+public native int Send(int id);
+public native int Receive();
+public native int Reply(int sender);
+public native int Trigger(int id, int proxy);
+public native int whatsMyRecvfd();
+public native int returnProxy(int proxy);
+public native String whatsMyError();
+public native int getMsgSize(int sender);

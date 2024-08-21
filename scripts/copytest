@@ -1,0 +1,83 @@
+#!/bin/bash
+#
+#$Log: copytest,v $
+#Revision 1.2  2008/12/17 16:21:19  bobfcsoft
+#don't copy CVS directory
+#
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.2  2004/07/21 18:04:59  bobfcsoft
+#removed recursive copy in data
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+TEST_DIR=$TEST_HOME/testing
+
+# usage
+function usage
+{
+echo;
+echo "================ copytest ==================";
+echo "   copy test files to a new test";
+echo;
+echo "   copytest <from test#> <to test#>";
+echo "   eg.";
+echo "        copytest 39 13";
+echo "   will create a new test 13 from test 39"
+echo "================= done ====================";
+echo;
+}
+
+# cp_files_only
+function cp_files_only
+{
+for file in `ls $1`
+do
+	if [ ! -d $1/$file ]
+	then 
+		cp $1/$file $2/$file
+#		echo "file=$file"
+	fi
+done
+}
+
+if [ $# = 0 ]
+then
+	usage
+else
+if [ $# = 1 ]
+then
+	usage
+else
+if [ ! -d $TEST_DIR/test$2 ]
+then
+	echo $TEST_DIR/test$2 does not yet exist
+	echo Will create it for you
+	mkdir $TEST_DIR/test$2
+	mkdir $TEST_DIR/test$2/scripts
+	mkdir $TEST_DIR/test$2/data
+	mkdir $TEST_DIR/test$2/results
+	sleep 2
+fi
+
+if [ $# = 2 ]
+then
+	echo "copying test$1 -> test$2"
+	cp $TEST_DIR/test$1/description $TEST_DIR/test$2
+	cp_files_only $TEST_DIR/test$1/scripts $TEST_DIR/test$2/scripts
+#	cp -r $TEST_DIR/test$1/data/* $TEST_DIR/test$2/data
+	cp_files_only $TEST_DIR/test$1/data $TEST_DIR/test$2/data
+	echo "done"
+	echo "============================================"
+	echo "REMEMBER to run:"
+	echo "    pretest $2 e"
+	echo "    posttest $2 e"
+	echo "and change the test number line TEST_NO=$2"
+	echo "============================================"
+fi
+fi
+fi

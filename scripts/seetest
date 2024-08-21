@@ -1,0 +1,107 @@
+#!/bin/bash
+#$Log: seetest,v $
+#Revision 1.2  2009/03/25 14:08:07  bobfcsoft
+#ask before creating new test
+#
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+TEST_DIR=$TEST_HOME/testing
+
+# usage
+function usage
+{
+echo;
+echo "================ seetest ==================";
+echo "   view test description for given test";
+echo;
+echo "   seetest <test#>";
+echo "   eg.";
+echo "        seetest 39";
+echo "   seetest i - index of all tests";
+echo "================= done ====================";
+echo;
+}
+
+# readline2
+function readline2
+{
+read myline
+read myline
+
+echo $myline
+}
+
+# createIndex
+function createIndex
+{
+cd $TEST_DIR
+for dir in `ls`
+do
+	if [ -d $dir ]
+	then
+		if [ -f $dir/description ]
+		then
+			readline2 < $dir/description
+		fi
+	fi
+done
+}
+
+
+if [ $# = 0 ]
+then
+	usage
+else
+if [ $1 = i ]
+then
+	createIndex		
+else
+if [ ! -d $TEST_DIR/test$1 ]
+then
+	echo $TEST_DIR/test$1 does not yet exist
+	echo -n "Do you want to create it now? [y/n]? "
+	read ans
+	if [ $ans == "y" ]
+	then
+		echo Will create it for you
+		mkdir $TEST_DIR/test$1
+		mkdir $TEST_DIR/test$1/scripts
+		mkdir $TEST_DIR/test$1/results
+		mkdir $TEST_DIR/test$1/data
+		cp $TEST_DIR/templates/desc_template $TEST_DIR/test$1/description
+		cp $TEST_DIR/templates/setup_template $TEST_DIR/test$1/scripts/setup
+		cp $TEST_DIR/templates/what_template $TEST_DIR/test$1/scripts/whathappened
+		cp $TEST_DIR/templates/run_template $TEST_DIR/test$1/scripts/runtest
+		echo "================"
+		echo "You need to run"
+		echo "seetest $1 e"
+		echo "pretest $1 e"
+		echo "dotest $1 e"
+		echo "posttest $1 e"
+		echo "to edit in $1 in place of the xxxx"
+		echo "and to create your test scripts."
+		echo "================"
+	fi
+	exit
+fi
+
+if [ $# = 2 ]
+then
+	if [ $2 = e ]
+	then
+		vi $TEST_DIR/test$1/description
+	else
+		view $TEST_DIR/test$1/description
+	fi
+else
+	
+	view $TEST_DIR/test$1/description
+fi
+fi
+fi

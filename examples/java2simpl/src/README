@@ -1,0 +1,81 @@
+This program is an example to prove that Java will work with the
+SIMPL project.  It is not the cleanest of code, so you will have
+to forgive me for the style.  It was written as a learning tool.
+I have never used Java before, so I figured this was a little
+better than creating the standard "Hello World" app.
+
+COMPILING:
+
+cd $SIMPL_HOME/examples/java2simpl/src
+make
+make install
+
+NOTE: this assumes that you have installed the JDK 1.2 for
+      Linux
+
+EXECUTING:
+
+To begin, you will need to open at least 3 console windows:
+
+1 - used to tail the logfile
+2 - to execute tclet2 example go script
+3 - to execute the java app (NetTest)
+
+Window 1:
+cd $SIMPL_HOME/bin
+tail -f junk
+
+Window 2:
+cd $SIMPL_HOME/examples/tclet2/src
+go
+
+Window 3:
+cd $SIMPL_HOME/examples/bin
+java NetTest
+
+Once the GUI begins, enter the following:
+
+Host should be left as localhost
+Port should be left as 16415
+
+press "Call" Button  // this will connect to SIMPL
+
+type "LOCATE" in message window (beside "Send" button)
+press "Send" Button  // return key not implemented yet
+
+type "ATTACH" in message window
+press "Send" Button
+
+type a message in message window (ie This is going to work...)
+press "Send" Button
+
+you should receive "hello there_0"
+
+NOTE: - every message you send should be replied with a "hello there_#"
+      - each # will be higher than the last one
+
+NOTE: - you can clear the receive window by pressing the "Clear" 
+        button and view what every you receive in either hex or 
+        text
+      - select the radio button that you would like to view
+
+when finished
+type "DETACH" in message window
+press "Send" Button
+
+
+That's it.  Have fun.  If you have any comments or questions, my
+e-mail is below.  Remember, this was only a learning exercise, so
+go easy on me.
+
+Thanks
+
+Donald Radke
+Computerific
+computerific@hotmail.com
+
+P.S. You will notice that some of the characters may not fit within
+     the buttons.  This gui was first developed on a NT platform and
+     then used here.  I have not actually sat down to try and figure
+     out how to correct this problem.  I know it has to do with fonts
+     defined in a config file somewhere.

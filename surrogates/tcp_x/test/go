@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PATH=$PATH:/sbin
+
+./stop
+sleep 1
+
+echo starting protocolRouter
+../../../bin/protocolRouter &
+sleep 1
+echo starting surrogateTcp 
+../../../bin/surrogateTcp -k10 &
+sleep 1
+echo starting surrogateTcp_x 
+../../../bin/surrogateTcp_x -k10 -a8003 &

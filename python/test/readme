@@ -1,0 +1,96 @@
+There are four python modules. All contain functions/methods that need to be
+tested. They are all explained below.
+
+1. class_C contains tests for a class-method approach to simpl with wrappers for
+constructing/deconstructing messages and extended C simpl functions. Uses
+the wcsimpl module.
+
+~/simpl/python/test/class_C
+
+All python programs use class methods for all SIMPL aspects.
+
+runtest		description
+=======		===========
+runCpack1	tests packing/unpacking methods in binary mode
+runCpack2	tests packing/unpacking methods in character mode
+runCpack3	tests packing/unpacking methods in offset mode
+run1		C receiver and python sender, binary mode messaging
+run2		python receiver and sender, character mode messaging
+run3		python receiver and sender, offset mode messaging
+
+
+2. mod_C contains tests for a function approach to simpl with wrappers for
+constructing/deconstructing messages and extended C simpl functions. Uses
+the wcsimpl module.
+
+~/simpl/python/test/mod_C
+
+All python programs use module functions for all SIMPL aspects.
+
+runtest		description
+=======		===========
+runCpack1	tests packing/unpacking methods in binary mode
+runCpack2	tests packing/unpacking methods in character mode
+runCpack3	tests packing/unpacking methods in offset mode
+run1		C receiver and python sender, binary mode messaging
+run2		python receiver/sender, character mode messaging
+run3		python receiver/sender, offset mode messaging
+
+
+3. struct_C contains tests for a function approach to simpl using only extended
+C simpl functions. The messages are constructed/deconstructed using the struct
+module. Uses the csimpl module.
+
+~/simpl/python/test/struct_C
+
+runtest		description
+=======		===========
+run			python receiver/sender using struct module (binary) for messages.
+
+
+4. class_S contains tests for a class-method approach to simpl with wrappers for
+constructing/deconstructing messages and Python simpl functions. Uses
+the wssimpl module.
+
+~/simpl/python/test/class_S
+
+All tests use the tclSurrogate.
+All python programs use class methods for all SIMPL aspects.
+
+runtest		description
+=======		===========
+run1		C receiver and python sender, binary mode messaging
+run2		python receiver/sender, character mode messaging
+run3		python receiver/sender, offset mode messaging
+
+
+5. mod_S contains tests for a function approach to simpl with wrappers for
+constructing/deconstructing messages and Python simpl functions. Uses
+the wssimpl module.
+
+~/simpl/python/test/mod_S
+
+All tests use the tclSurrogate.
+All python programs use module functions for all SIMPL aspects.
+
+runtest		description
+=======		===========
+run1		C receiver and python sender, binary mode messaging
+run2		python receiver/sender, character mode messaging
+run3		python receiver/sender, offset mode messaging
+
+
+6. struct_S is the same as the above but without the wrappers used for
+constructing/deconstructing messages. Instead the message
+construction/deconstruction is dealt with using the struct module. Uses the
+ssimpl module.
+
+~/simpl/python/test/struct_S
+
+All tests use the tclSurrogate.
+
+runtest		description
+=======		===========
+run			python receiver/sender using struct module (binary) for messages.
+
+

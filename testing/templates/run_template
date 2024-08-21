@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+#$Log: run_template,v $
+#Revision 1.1  2006/01/12 15:50:20  bobfcsoft
+#initial add
+#
+#
+
+TEST_NO=xxxx
+TEST_DESC="short description here"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+#
+# bulk of test script goes here
+# 
+
+echo "Test finished you can run posttest $TEST_NO for result"

@@ -1,0 +1,47 @@
+Date
+----
+June 20, 2013
+
+Title
+-----
+readme for the latest edition of the SIMPL/Python3 software.
+
+General
+-------
+The latest update of the SIMPL/Python C software can be loaded onto a prior
+installation of SIMPL without any naming conflicts. This update deals with many
+issues, perhaps the most important being compatibility with Python version 3.*.
+
+Steps
+-----
+1. Copy tarball into /.../simpl
+	cp simpy.tgz /.../simpl
+
+2. Go to /.../simpl
+	cd /.../simpl
+
+3. Untar/unzip the tarball
+	tar -zxf simpy.tgz
+
+4. Go to /.../simpl/python3/src
+	cd python.4/src
+
+5. Run the build script
+	python buildsimpl.py OR python3 buildsimpl.py
+	
+At this point you should have created and installed the necessary C python
+extension libraries.
+
+*** Don't forget to make certain /.../simpl/modules or
+/.../simpl/python3/modules is in your PYTHONPATH environment variable.
+
+6. Go to /.../simpl/python.4/test/C_programs
+
+7. Run the make file
+	make clean
+	make install
+
+You should now be ready to run tests. For instructions and explanations see the
+readme.tests in the /.../simpl/python.43/tests directory.
+
+*** the above tests are excellent examples of how to use SIMPL-Python!

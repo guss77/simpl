@@ -1,0 +1,28 @@
+# This script runs packAll1.py which tests the simpl pack/unpack message methods
+# under python 2 or 3.
+
+# Command line: testPack2 2 OR testPack2 3
+
+#! /bin/sh
+
+if [ $# -ne 1 ]; then
+	echo "Incorrect command line."
+	exit
+fi
+
+# needed for a the nameAttach() that is called by the class constructor when an
+# instance ids created in the program packAll2.
+$SIMPL_HOME/bin/tclSurrogate -n SURRO -p 50001 &
+
+sleep 1
+
+if [ $1 -eq 3 ]
+then
+	echo "python 3"
+	python3 -OO packAll2.py
+else
+	echo "python 2"
+	python -OO packAll2.py
+fi
+
+fcslay SURRO

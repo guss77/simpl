@@ -1,0 +1,86 @@
+-------------------------------------------
+	tclet Call back example
+-------------------------------------------
+FCsoftware Inc. 2000, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+=======================================
+How to build the tclet4 example.
+=======================================
+This makes the assumption that you have already downloaded and
+installed the latest SIMPL code.  It also makes the assumption
+that you have tcl8.0 or better installed on your machine. 
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$SIMPL_HOME. ie:
+	cd $SIMPL_HOME
+	cd ..
+	tar -zxvf <tarballname>
+
+2) build the tclet executables
+	cd $SIMPL_HOME/examples/tclet4
+	make clobber
+	make install
+
+This will place three files in $SIMPL_HOME/examples/bin
+	$SIMPL_HOME/examples/bin/tclet4.html
+	$SIMPL_HOME/examples/bin/tclet4.tcl
+	$SIMPL_HOME/examples/bin/cbServer
+
+"tclet4.tcl" is the applet code and tclet4.html is the web page which embeds the
+applet.
+
+===================================
+How to run the tclet example
+===================================
+Note: an assumption is made that you have downloaded and installed
+TclPlugin v2.0 or better.   The assumption is also made that you have
+installed the fcsocket.tcl package in the TclPlugin directory as per
+the 
+	$SIMPL_HOME/tcl/src/readme
+
+For this you will need to open 1 console (or Xterm windows).
+
+on Console 1: logged into $SIMPL_HOME/examples/tclet4/src
+
+	go
+
+This will start up the trace logger (fclogger) and the tclSurrogate in the
+background.  It will startup the call back agent (cbServer) in the foreground.
+The cbServer will attempt to perform a name locate on the name assigned to
+the tclet (BOBTCL).  At this point this will fail because the tclet is not yet
+running.  The cbServer will pause waiting for user input to try the locate
+again.
+
+To bring up the tclet4.tcl use the browser to retrieve the tclet4.html file.
+This should cause the tclet (tclet4.tcl) to render.   At this point the 
+applet has been installed as a normal SIMPL enabled "receiver".
+
+Go back to the console on which you ran the "go" script and hit any key
+to enable the name locate to repeat.   This should allow the agent to find
+the tclet and establish contact.
+
+You then need to press the "make call back" button to force the call back
+sequence to occur.   
+
+What is going to happen is:
+	i) the tclet will compose a message containing the current label
+color and reply it back to the send blocked agent (cbServer)
+	ii) the message will contain the name of the Tcl/Tk call back
+function to call when the response is sent
+	iii) the agent (cbServer) will take this reply and extract the color
+	iv) the agent will generate a new color and compose a response 
+message containing the call back function name and the new color info
+	v) the agent will then send this message back to the tclet
+	vi) when the tclet receives the response it will extract the new
+color info and the call back function name and invoke the callback with
+the new color info as an argument
+
+If this sequence is successful the color of the text box should change to 
+reflect the coding on the cbServer SIMPL process. 
+
+Have fun.

@@ -1,0 +1,9 @@
+-----------------------------------------------
+Test s0004: polling emitter softwareIC unit test
+
+$Log: description,v $
+Revision 1.1  2007/07/24 20:34:24  bobfcsoft
+new file
+
+
+This test runs the polling emitter unit test.

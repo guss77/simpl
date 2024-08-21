@@ -1,0 +1,6 @@
+#! /bin/sh
+
+CLASSPATH=../../class
+LIBPATH=../../lib
+
+java -classpath $CLASSPATH -Djava.library.path=$LIBPATH PackJtest3

@@ -1,0 +1,26 @@
+#! /bin/sh
+
+if [ $# -ne 1 ]; then
+	echo "Incorrect command line."
+	exit
+fi
+
+$SIMPL_HOME/bin/tclSurrogate -n SURRO -p 50000 &
+
+sleep 1
+
+../../bin/receiver &
+
+sleep 1
+
+if [ $1 -eq 3 ]
+then
+	echo "python 3"
+	python3 senderBin.py
+else
+	echo "python 2"
+	python senderBin.py
+fi
+
+fcslay RECEIVER_B
+fcslay SURRO

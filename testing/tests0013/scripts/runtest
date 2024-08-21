@@ -1,0 +1,24 @@
+#!/bin/bash
+
+TEST_NO=s0013
+TEST_DESC="Python unit test with tclSurrogate"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+tclSurrogate -n SURRO &
+
+cd $TEST_HOME/sudoku/bin
+sim -n ENGINE &
+
+gui.tcl -N TCLGUI -R engine 
+
+fcslay SURRO
+fcslay engine
+
+echo "Test finished you can run posttest $TEST_NO for result"

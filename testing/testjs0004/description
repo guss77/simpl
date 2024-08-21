@@ -1,0 +1,11 @@
+-----------------------------------------------
+js0004: Java Ssimpl binary pack/unpack test
+
+This test examines the veracity of the packing and unpacking methods with
+respect to a binary memory arrangement such as that found in C structures which
+often use some form of padding for the sake of memory boundaries. The
+packing/unpacking methods cover all java primitive forms and one dimensional
+arrays. These methods would be required for SIMPL communications with C programs
+which use structures as message definitions.
+
+These methods are contained in the class called Ssimpl.

@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+#$Log: auxtest,v $
+#Revision 1.1  2007/07/03 18:33:20  bobfcsoft
+#new test
+#
+#
+#
+
+TEST_NO=s0003a
+TEST_DESC="SIMPL benchmark via sandboxRelay"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+echo "" | tee -a $OUTFILE
+echo "This may take a while to complete ... please wait" | tee -a $OUTFILE
+echo "" | tee -a $OUTFILE
+
+export FIFO_PATH=/home/fifo2
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk &
+
+cd $SIMPL_HOME/simplUtils/bin
+cksum sandboxRelay | tee -a $OUTFILE
+sandboxRelay -n BOBR -f /home/fifo -l LOGGER &
+
+echo "pause"
+read ans
+
+cd $SIMPL_HOME/benchmarks/bin
+cksum sender | tee -a $OUTFILE
+sender -n BOBS -r BOBR -t 10 -s 1024 | tee -a $OUTFILE
+
+fcslay BOBR
+fcslay LOGGER
+echo "Test finished you can run posttest $TEST_NO for result"

@@ -1,0 +1,9 @@
+#! /bin/sh
+
+python receiverCoffset.py &
+
+sleep 2
+
+python senderCoffset.py
+
+fcslay RECEIVER_O

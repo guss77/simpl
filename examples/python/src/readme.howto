@@ -1,0 +1,56 @@
+The following is a description of how to operate the simpl test
+programs under python. Python simpl was developed under python version
+1.5.2 in the hope that it would be compatible with more versions of
+python.
+
+NOTE - You must set the PYTHONPATH shell variable: 
+
+export PYTHONPATH=$(PYTHONPATH):/home/simpl/simpl.2.0.3/python/modules
+
+All of the example programs either send or receive three types of
+tokenized messages. The three types of canned messages were an attempt
+to make examples of communicating various different C/python variable
+types. Programs are either text-based or gui-based. The text-based
+programs are started from a text screen while the gui-based programs
+are started from a gui.
+
+The various example programs are as follows:
+
+1. sender_txt.py - is text-based sending program.
+It is started from by
+>python sender_txt.py receivername tokentype
+
+receivername is the name of the receiving program. In the case of 
+receiver_txt.py and receiver_gui.py it is 'py_receiver'. In the case
+of receiver_txt.c it is simply 'receiver'. 
+
+tokentype is either 10 or 20 or 30 depending on the message type you
+want to send.
+
+2. sender_gui.py - is a python script gui-based program.
+It is started from a desktop-shell window by
+>python sender_gui.py receivername
+
+3. sender.c/sender - is a C text-based sending program. It is started by
+>sender sendername receivername tokentype
+It is one-shot deal.
+sendername is the name of the sender, 'sender' say.
+receivername is either py_receiver or receiver depending.
+tokentype is either 10 or 20 or 30 depending on the message type you
+want to send.
+
+The following arrangements hold:
+
+1. sender_txt.py --> receiver_txt.py
+2. sender_txt.py --> receiver_gui.py
+3. sender_txt.py --> receiver_txt.c
+4. sender_gui.py --> receiver_txt.py
+5. sender_gui.py --> receiver_gui.py
+6. sender_gui.py --> receiver_txt.c
+7. sender_txt.c --> receiver_txt.py
+8. sender_txt.c --> receiver_gui.py
+
+Observant individuals will note that the combination of
+sender_txt.c --> receiver_txt.c is missing. Since this is merely the
+original simpl C sender to simpl C receiver, it has already been done
+in earlier examples.

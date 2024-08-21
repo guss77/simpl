@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# dotest - runs the local runtest script
+#
+#$Log: dotest,v $
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+NUM_OF_ARGS=$#
+FILE_NAME=$0
+TEST_NO=$1
+INPUT_FILE=$2
+THIRD_ARG=$3
+
+echo "TEST_NO=$TEST_NO"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+
+# usage
+function usage
+{
+echo;
+echo "================= dotest ==================";
+echo "  Actually perform the test in automated ";
+echo "	fashion if possible";
+echo;
+echo "  dotest <test#>";
+echo "  eg.";
+echo "        dotest 38";
+echo "================= done ====================";
+echo
+}
+
+if [ $NUM_OF_ARGS = 0 ]
+then
+	usage
+else
+if [ $NUM_OF_ARGS = 1 ]
+then
+
+$TEST_DIR/scripts/runtest
+else
+
+if [ $NUM_OF_ARGS = 2 ]
+then
+         if [ $INPUT_FILE = e ]
+         then
+         vi $TEST_DIR/scripts/runtest
+         else
+         $TEST_DIR/scripts/runtest $INPUT_FILE
+         fi
+else
+if  [ $NUM_OF_ARGS = 3 ]
+                
+then
+$TEST_DIR/scripts/runtest $INPUT_FILE $THIRD_ARG	
+
+fi
+fi
+fi
+fi

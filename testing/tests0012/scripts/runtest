@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2008/12/17 15:48:50  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0012
+TEST_DESC="broadcaster unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/broadcaster/bin
+cksum fcBroadcaster | tee -a $OUTFILE
+fcBroadcaster -n BOBB -f BOBI -l LOGGER &
+
+cksum fcMgr | tee -a $OUTFILE
+fcMgr -n BOBI -l LOGGER -b &
+
+cksum senderStim | tee -a $OUTFILE
+senderStim -n BOBD -f BOBI -l LOGGER
+
+fcslay BOBB
+fcslay BOBI
+fcslay LOGGER
+
+echo "Test finished you can run posttest $TEST_NO for result"

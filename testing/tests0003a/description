@@ -1,0 +1,11 @@
+-----------------------------------------------
+Test s0003a: SIMPL benchmark via sandboxRelay
+
+$Log: description,v $
+Revision 1.1  2007/07/03 18:33:20  bobfcsoft
+new test
+
+
+This test runs the SIMPL benchmark via the sandboxRelay with 
+100000 1k message passes.
+

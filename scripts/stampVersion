@@ -1,0 +1,43 @@
+#!/bin/bash
+#=========================================================
+#	stampVersion
+#
+# Description:
+# create a SIMPL version file
+#
+#-----------------------------------------------------------------------
+#
+# $Log: stampVersion,v $
+# Revision 1.1  2008/04/22 12:47:30  bobfcsoft
+# new file
+#
+#
+#=========================================================
+SIMPLVERSION=$SIMPL_HOME/version
+
+#usage
+function usage
+{
+	echo;
+	echo "==================== stampVersion ======================";
+	echo " create SIMPL version file"
+	echo "        stampVersion <version number>"
+	echo ""
+	echo " eg. stampVersion 1.4.16"
+	echo "===============================================";
+	echo;
+}
+
+if [ $# = 0 ]
+then
+	usage
+else
+
+echo "=========================" > $SIMPLVERSION
+echo "Version: $1" >> $SIMPLVERSION
+echo -n "Created on: " >> $SIMPLVERSION
+date >> $SIMPLVERSION
+echo "=========================" >>$SIMPLVERSION
+
+cat $SIMPLVERSION
+fi

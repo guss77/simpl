@@ -1,0 +1,97 @@
+#!/bin/bash
+#
+#$Log: pretest,v $
+#Revision 1.2  2009/03/25 14:08:07  bobfcsoft
+#ask before creating new test
+#
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+TEST_NUMBER=$1
+
+TEST_DIR=$TEST_HOME/testing
+FULL_TEST_DIR=$TEST_DIR/test$TEST_NUMBER
+
+# usage
+function usage
+{
+echo;
+echo "=================== pretest =======================";
+echo "  Preset up the environment for a given test";
+echo;
+echo "  pretest <test#> <options>";
+echo "  where options are:";
+echo "      e - edit the pretest script";
+echo "      xin - check in the pretest script to RCS";
+echo "      xout - check out the pretest script from RCS";
+echo "";
+echo "  eg.";
+echo "        pretest 39";
+echo "==================== done =========================";
+echo
+}
+
+if [ $# = 0 ]
+then
+	usage
+else
+if [ ! -d $FULL_TEST_DIR ]
+then
+	echo $FULL_TEST_DIR does not yet exist
+	echo -n "Do you want to create it now? [y/n]? "
+	read ans
+	if [ $ans == "y" ]
+	then
+		echo Will create it for you
+		mkdir $FULL_TEST_DIR
+		mkdir $FULL_TEST_DIR/scripts
+		mkdir $FULL_TEST_DIR/data
+		mkdir $FULL_TEST_DIR/results
+		cp $TEST_DIR/templates/desc_template $FULL_TEST_DIR/description
+		cp $TEST_DIR/templates/setup_template $FULL_TEST_DIR/scripts/setup
+		cp $TEST_DIR/templates/what_template $FULL_TEST_DIR/scripts/whathappened
+		cp $TEST_DIR/templates/run_template $FULL_TEST_DIR/scripts/runtest
+		echo "================"
+		echo "You need to run"
+		echo "pretest $TEST_NUMBER e"
+		echo "dotest $TEST_NUMBER e"
+		echo "posttest $TEST_NUMBER e"
+		echo "to edit in $TEST_NUMBER in place of the xxxx"
+		echo "================"
+	fi
+	exit
+fi
+
+if [ $# = 1 ]
+then
+	$FULL_TEST_DIR/scripts/setup
+else
+if [ $# = 2 ]
+then
+	if [ $2 = e ]
+	then
+		vi $FULL_TEST_DIR/scripts/setup
+	else
+	if [ $2 = xout ]
+	then
+		cd $FULL_TEST_DIR/scripts
+		xout setup
+	else
+	if [ $2 = xin ]
+	then
+		cd $FULL_TEST_DIR/scripts
+		xin setup
+	else
+		$FULL_TEST_DIR/scripts/setup $2
+	fi
+	fi
+	fi
+
+fi
+fi
+fi

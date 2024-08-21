@@ -1,0 +1,10 @@
+-----------------------------------------------
+js0013: Java Ssimpl java-receiver/Jsimpl java-sender character message test
+
+This test consists of a local Jsimpl java sender program exchanging a
+character-type message with a local Ssimpl java receiver program. The java
+sender is running locally for convenience only. It is actually communciating
+with the java receiver via the tclSurrogate. The tclSurrogate allows the sender
+to be running on another host but for our purposes, the host setting is
+localhost, hence communications occur via sockets through the loopback
+interface.

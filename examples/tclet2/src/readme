@@ -1,0 +1,68 @@
+-------------------------------------------
+	tclet sender example
+-------------------------------------------
+FCsoftware Inc. 1999, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+=======================================
+How to build the tclet example.
+=======================================
+This makes the assumption that you have already downloaded and
+installed the latest SIMPL code.  It also makes the assumption
+that you have tcl8.0 or better installed on your machine.
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$FC_HOME. ie:
+	cd $FC_HOME
+	cd ..
+	tar -xvf <tarballname>
+
+2) build the tclet executables
+	cd $FC_HOME/examples/tclet2/src
+	make clobber
+	make install
+
+This will place two files in $FC_HOME/examples/bin
+	$FC_HOME/examples/bin/fc2.html
+	$FC_HOME/examples/bin/fc2.tcl
+
+"fc2.tcl" is the applet code and fc2.html is the web page which embeds the
+applet.
+
+===================================
+How to run the tclet example
+===================================
+Note: an assumption is made that you have downloaded and installed
+TclPlugin v2.0 or better.   The assumption is also made that you have
+installed the fcsocket.tcl package in the TclPlugin directory as per
+the 
+	$FC_HOME/tcl/src/readme
+
+For this you will need to open 2 consoles (or Xterm windows).
+
+on Console 1: logged into $FC_HOME/examples/tclet2/src
+
+	go
+
+using the browser retrieve the fc2.html file above.   This should cause the 
+tclet (fc2.tcl) to render.   At this point the applet has been installed
+as a normal SIMPL enabled "sender".
+
+From within the applet we need to do a name locate on the SIMPL receiver
+to which we wish to send our messages.   The "go" script above assigned the
+SIMPL name
+	BOBR
+to the receiver (called fifoReceiver).  You therefore need to enter BOBR into
+the message box next to the locate button.  You then need to press the "locate"
+button to force the name locate to occur.
+
+If this step is successful the sendMe button will then be enabled.  At this 
+point you can enter our message into the message box and hit "sendMe".  You 
+should see a reply appear in the message box below your message.  You can
+repeat this send as many times as you wish.
+
+Have fun.

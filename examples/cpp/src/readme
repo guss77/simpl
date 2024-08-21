@@ -1,0 +1,50 @@
+This was a test to see if we could get SIMPL to work with C++
+code.  So what I did was copy the benchmark test and created a
+Sender Class and a Receiver Class.
+
+Sender.cpp - C++ code that uses the Sender Class
+Sender.hpp - Sender Class and methods
+Receiver.cpp - C++ code that uses the Receiver Class
+Receiver.hpp - Receiver Class and methods
+FCID.hpp - a copy of the FCID structure used in SIMPL 'C' code
+
+You should be able to use the 3 .hpp files with your C++ code that
+you wish to use SIMPL with.  If you think the C++ .hpp files need
+improving, please by all means modify them, just let me know what
+changes you make.  As mentioned, this was to test SIMPL with C++, but
+also to help me learn more about C++.
+
+To Run:
+You will need 2 consoles...
+
+1.) go to cpp/bin and run
+
+Receiver -n BOBR
+
+-n = SIMPL name of application
+
+2.) go to cpp/bin and run
+
+Sender -n BOBS -r BOBR -t 60000 -s 1024
+
+If it works, it should inform you how long it took to send
+60000 (-t) messages of 1024 (-s) bytes.
+
+-t = how many times to send a message
+-s = size in bytes of message
+-n = SIMPL name of application
+-r = SIMPL name of receiver
+
+
+*************************************************************
+Side Note:
+
+My Machine - P3-500 with 512Megs of RAM running Lycoris Linux Build 44
+
+~4833ms to send 60000 messages of 1024 bytes...
+
+The SIMPL benchmark code written in 'C' does the following on the same
+machine:
+
+~4371ms to send 60000 messages of 1024 bytes...
+

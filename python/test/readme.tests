@@ -1,0 +1,84 @@
+Date
+----
+June 20, 2013
+
+Title
+-----
+readme for the latest edition of the SIMPL/Python software tests
+
+General
+-------
+Any new tests are virtually the same as the old tests in that they check on the
+same things in the same way. However, they reflect a new packing/unpacking
+philosophy and only only use an instance of the Simpl object class.
+
+Packing/Unpacking Test
+----------------------
+
+The purpose of this test is simply check that the packing and unpacking methods
+are working correctly.
+
+At the command line prompt:
+
+cd /.../simpl/python/test/csimpl
+testPack1 2
+testPack2 2
+and/or
+
+testPack1 3
+testPack2 3
+
+for Python2.* and Python3.* respectively.
+
+testPack1 uses the newer packMsg() and unpackMsg() functions/methods.
+testPack2 uses the older packByte(), packFloat(), unpackShort(), unpackString() 
+etc. functions/methods.
+
+The screen printouts should look the same w.r.t. data content.
+
+Binary Message Test
+----------------------
+
+This test script runs a Python sender which builds a binary message and then
+sends it to a C receiver which then prints out the contents of the message and
+replies it back to the Python sender who also prints out the mesage. It should
+look the same.
+
+testBin 2
+or
+testBin 3
+
+for python 2 and 3 respectively.
+
+Character Message Test
+----------------------
+
+This test script runs a Python sender which builds a character message and then
+sends it to a Python receiver which then prints out the contents of the message
+and replies it back to the Python sender who also prints out the mesage. It
+should look the same.
+
+testChar 2
+or
+testChar 3
+
+for python 2 and 3 respectively.
+
+Trigger Message Test
+--------------------
+
+This test script runs a Python sender which sends a trigger to a Python
+receiver which then prints out the trigger (an integer). Note that the trigger 
+functionality does not exist ffor the tclSimpl library.
+
+testTrig 2
+or
+testTrig 3
+
+for python 2 and 3 respectively.
+
+Note: the above tests pack and unpack every kind of C data type, send and 
+receive binary and character based messages and exercise the main 
+methods/functions in the csimpl and tclSimpl modules. As such they provide good 
+examples of what to do and how to do it and they are a good place to start when 
+looking for sample code.

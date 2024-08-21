@@ -1,0 +1,157 @@
+======================================================
+readme.rcs
+======================================================
+$Log: readme.rcs,v $
+Revision 1.3  2009/01/22 14:53:55  bobfcsoft
+cleanup
+
+Revision 1.2  2007/07/24 20:03:49  bobfcsoft
+new contact info
+
+======================================================
+
+This file is intended as a brief overview of the SIMPL RCS script set.
+
+Background:
+Most software projects have a clearly defined directory tree
+structure to which all developers must adhere.
+
+One of the best ways to manage such a software project is to create
+working trees called "virtual trees" for each developer.   These 
+working trees are populated mostly with symbolic links to readonly 
+copies of RCS'd files in the "gold tree".
+
+This scheme greatly simplifies the sharing of files amongst several
+developers.   These tools can also be used to organize a complex
+single developer project.
+
+-----------------------------------
+
+Some terminology:
+gold tree     - directory tree where RCS versions of files are
+                stored
+virtual tree  - working directory tree consisting largely of 
+                symbolic links to project files in RCS gold tree
+personal path - portion of working tree which is user specific
+project path  - portion of working tree which is replicated across
+                the project
+cut point     - first subdirectory in project path used to split
+                any directory path name into personal path
+                and project path
+
+-----------------------------------
+
+What you need to get started:
+1) undo the tar.gz file as per the SIMPL instructions
+2) be sure that $SIMPL_HOME/shells is in your $PATH
+3) create two environment variables of the form:
+	export RCS_GOLD=<gold tree personal path part>
+	export CUT_POINTS="<cut point 1> <cut point 2> etc"
+
+eg:
+	export RCS_GOLD=/home/RCS_gold
+	export CUT_POINTS="fc bob dam"
+
+4) create a virtual tree with a subdirectory containing one of
+the defined CUT_POINTS
+	ie.  /home/bob/things/morethings
+5) create a file in your virtual tree and check it into the RCS
+system
+	ie. xin bob.c
+
+At this point you simply need to repeat for all files and you 
+are in business.
+
+-----------------------------------
+
+
+Scripts:
+
+xln - create a symbolic link to the readonly copy of the RCS'd file
+      in the "gold tree"
+
+      Usage:
+	xln <filename> or all
+
+      Note:
+	If filename is supplied a single link is created.  
+	If "all" is the argument then links will be created for
+        all files present at this level in the "gold tree".
+
+xin - check in a file to the RCS system, check out a readonly copy
+      of this file in the "gold tree" and create a symbolic link
+      to this file from the present location.
+
+      Usage:
+	xin <filename>
+
+xout - check out a file from the RCS system and set the user lock
+       
+      Usage:
+	xout <filename>
+
+These three scripts represent the bulk of things you would normally do
+with the system.   In larger more sophisticated projects you may want
+to avail yourself of the following additional scripts.
+
+xnameit - add a symbolic name to the latest version of the RCS'd file
+
+     Usage:
+	xnameit <filename> <symbolic_name>
+
+     Note:
+	RCS will not accept anything but a contiguous name.  You will
+        therefore need to use "_" instead of blanks.
+
+xtract - extract a file from the RCS tree by either version number
+         or symbolic name but do not lock it from others
+
+     Usage:
+	xtract <filename> <version number or symbolic name>
+
+xver - review the RCS version history on a file
+
+     Usage:
+	xver <filename>
+
+xdiff - display the differences between the file at this location and
+        the latest checked in version of the same file
+
+     Usage:
+	xdiff <filename>
+
+In larger projects still you may want to create a list of files for the
+whole project and then use this list to drive various operations 
+associated with releasing code.
+
+tagRelease - use the file list to prepend a personal path and then
+             run xnameit on each file to create a marked release
+
+xtractRelease - use the file list to prepend a personal path to a
+            staging directory and run xtract on each file to extract
+            a complete release
+
+All these scripts use a few utility scripts:
+
+goldDir - determines the full gold tree path from the current directory
+          and the cut points
+
+splitDir - returns the project path portion of a directory path
+
+check_n_mkdir - is called recursively to build the missing portions
+           of a directory tree
+
+If you have any comments, enhancement suggestions or bugs please report
+them to the SIMPL project mailing list.
+
+
+Hope you find these as useful for your projects as we have at FCsoftware.
+
+
+-------------------------
+FCsoftware Inc. 1998,2009
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------

@@ -1,0 +1,46 @@
+Statemachine Software IC
+==============================
+Statemachine logic is a very common element of many software applications.
+
+This code is divided into two sections which are remerged by the Makefile.
+
+The SM_common contains the basic statemachine logic and framework.
+
+The SM_door contains all the implementations of the statemachine API
+and all logic associated with a simple door
+
+The unit test is s0007 which operates this whole show.
+
+This software IC has its own built in datastore which is fed from a
+simple value: data paired text file.   The datastore itself uses the
+concept of a preallocated memory pool which is more embedded friendly
+than the full dynamic memory allocations.
+
+The statemachine is operated upon by a single test stub called eventStim.
+
+The eventStim test stub is wearing many hats in this demo. 
+
+The eventStim can be used to operate the various datastore operations:
+
+	ADD
+	DELETE
+	OVERWRITE
+	RESYNC
+
+The eventStim can be used to issue the events associated with a door:
+
+	UNLOCK
+	OPEN
+	CLOSE
+	TIMER
+
+The eventStim is configured to receive any ALARM messages that the 
+statemachine issues.    In the case of the door their is an alarm 
+event associated with the door being held open beyond a specificed window.
+
+The statemachine logic can accomodate many different doors in its datastore.
+
+As always if you find bugs,  add enhancements or bug fixes we'd love to 
+hear from you.   Just contact the SIMPL project mailing list. 
+
+the SIMPL developers

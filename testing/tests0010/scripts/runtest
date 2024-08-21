@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+#$Log: runtest,v $
+#Revision 1.1  2008/12/17 15:51:34  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0010
+TEST_DESC="agency unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > $TEST_DIR/results/junk & 
+
+cd $SIMPL_HOME/softwareICs/agency/bin
+cksum agency | tee -a $OUTFILE
+agency -n BOBA -l LOGGER &
+
+sleep 1
+
+cksum agent | tee -a $OUTFILE
+agent -n BOBG -a BOBA -l LOGGER -d 10&
+
+echo "============================================"
+echo ""
+echo "agent startup is delayed by 10 sec"
+echo ""
+echo "============================================"
+
+cksum requestor | tee -a $OUTFILE
+requestor -n BOBR -a BOBA -l LOGGER
+
+fcslay BOBG
+fcslay BOBA
+fcslay LOGGER
+
+echo "Test finished you can run posttest $TEST_NO for result"

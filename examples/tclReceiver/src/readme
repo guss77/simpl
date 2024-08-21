@@ -1,0 +1,88 @@
+-------------------------------------------
+	tclReceiver example
+-------------------------------------------
+FCsoftware Inc. 1999, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+=======================================
+How to build the tclReceiver example.
+=======================================
+This makes the assumption that you have already downloaded and
+installed the latest SIMPL code.  It also makes the assumption
+that you have tcl8.0 or better installed on your machine.
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$FC_HOME. ie:
+	cd $FC_HOME
+	cd ..
+	tar -xvf <tarballname>
+
+2) build the tclReceiver executables
+	cd $FC_HOME/examples/tclReceiver/src
+	make clobber
+	make install
+
+This will place two executables in $FC_HOME/examples/bin
+	$FC_HOME/examples/bin/tclReceiver.tcl
+	$FC_HOME/examples/bin/tclStim
+
+"tclReceiver.tcl" will be the be the receiver of messages from "tclStim".
+These messages will demonstate Send/Receive/Reply messaging between a
+Linux app and a stand alone Tcl script.
+
+===================================
+How to run the tclReceiver example
+===================================
+For this you will need to open 3 consoles (or Xterm windows).
+
+on Console 1: logged into $FC_HOME/bin
+
+	fclogger -n LOGGER   
+	(or fclogger -n LOGGER > junk   to redirect trace log to a file)
+	where
+		LOGGER - name given to the trace logger process
+
+on Console 2: logged into $FC_HOME/examples/bin
+
+	tclReceiver.tcl -N BOBTCL -m 0xff -l LOGGER
+	where
+		BOBTCL - name given to the "tclReceiver.tcl" process
+		0xff - command line log mask override
+		LOGGER - name of trace logger in step 1 above
+
+on console 3: logged into $FC_HOME/examples/bin
+
+	tclStim -n BOBS -r BOBTCL -l LOGGER
+	where
+		BOBS - name given to the tclStim process
+		BOBTCL - name of recipient (the "tclReceiver.tcl" on console 2)
+		LOGGER - name of trace logger
+
+The "tclStim" (Stim stands for stimulator) should prompt for a command with:
+	Enter command:
+for a list of possible commands you can enter ?
+
+To run this little example type each of the follow commands in sequence
+and examine the output of the trace logger on console 1 BETWEEN each.
+
+	Enter command: t hi
+	Enter command: t hello everybody
+	Enter command: q
+
+What we are doing is causing a FC_TESTING_MSG to be sent from 
+"tclStim" -> "tclReceiver.tcl".  This message will then be displayed 
+on console 2 screen and placed in the trace log.
+
+The source for the tclReceiver.tcl is arrived at by cat'g all the 
+.tcl files in (the make command does this)
+	$FC_HOME/examples/tclReceiver/src/ 
+
+Have fun.
+
+We have used a similar scheme to form the basis of some very powerful
+Tcl/Tk applications.   It is very straightforward to extend this example
+to a GUI type application using Tk.

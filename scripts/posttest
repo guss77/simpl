@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+#$Log: posttest,v $
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+TEST_DIR=$TEST_HOME/testing/test$1
+
+# usage
+function usage
+{
+echo;
+echo "================ posttest ==================";
+echo "   scan the environment for a given";
+echo "   test";
+echo;
+echo "   posttest <test#>";
+echo "   eg.";
+echo "        postest 39";
+echo "================= done ====================";
+echo
+}
+
+if [ $# = 0 ]
+then
+	usage
+else
+if [ $# = 1 ]
+then
+
+	$TEST_DIR/scripts/whathappened 
+else
+if [ $# = 2 ]
+then
+	if [ $2 = e ]
+	then
+		vi $TEST_DIR/scripts/whathappened
+	else
+		$TEST_DIR/scripts/whathappened $2
+	fi
+else
+	
+	$TEST_DIR/scripts/whathappened $2
+fi
+fi
+fi

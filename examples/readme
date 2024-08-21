@@ -1,0 +1,37 @@
+-------------------------
+FCsoftware Inc. 1999,2003,2005,2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+These examples are intended to be illustrative.   They are, however,
+quite able to form the basis of some full applications.
+
+Each examples directory contains the following subdirectories:
+	src  - where the Makefile, .c and readme instructions live
+	include - where all the .h headers for that example live
+
+==============================================
+The following examples are currently provided:
+==============================================
+logmasker - demonstrates the run time masking abilities of SIMPL
+	    trace logger ($SIMPL_HOME/fclogger)
+tclReceiver - demonstrates the ability to exchange SIMPL style messages
+            between a Linux app and a Tcl script.
+rtInterface - demonstrates the exchange of messages with an RTLinux module
+tclet - demonstrates the ability to exchange SIMPL style messages
+	between a Linux app and a Tcl/Tk applet.
+tclet2 - demonstrates the ability to make a Tcl/Tk applet into a
+	SIMPL sender
+tclet3 - demonstrates the ability to write RPC style code from
+	a Tcl/Tk applet using SIMPL messaging as the carrier
+java2simpl - demonstrates the tclet style exchange of messages between
+	SIMPL app and a JAVA thread.
+python - demonstrates the SIMPL Python language hooks
+fcnet - network failure reporting program
+
+This list will hopefully expand as we collect more useful examples.
+
+Contributions from outside are welcome.

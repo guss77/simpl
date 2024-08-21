@@ -1,0 +1,9 @@
+-----------------------------------------------
+Test s0009: relay softwareIC unit test
+
+$Log: description,v $
+Revision 1.1  2008/12/17 15:39:52  bobfcsoft
+new file
+
+
+This test runs the relay unit test.

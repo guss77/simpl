@@ -1,0 +1,9 @@
+FREQUENCY=200
+
+echo "==============================="
+echo starting rtStim example
+echo "FREQUENCY = $FREQUENCY Hz"
+echo "==============================="
+
+cd $FC_HOME/examples/bin
+rtStim -n BOBI -l LOGGER -f $FREQUENCY

@@ -1,0 +1,88 @@
+-------------------------------------------
+	tclSender example
+-------------------------------------------
+FCsoftware Inc. 2000, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+=======================================
+How to build the tclSender example.
+=======================================
+This makes the assumption that you have already downloaded and
+installed the latest SIMPL code.  It also makes the assumption
+that you have tcl8.0 or better installed on your machine.
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$SIMPL_HOME. ie:
+	cd $SIMPL_HOME
+	cd ..
+	tar -zxvf <tarballname>
+
+2) build the tclReceiver executables
+	cd $SIMPL_HOME/examples/tclSender/src
+	make clobber
+	make install
+
+This will place two executables in $SIMPL_HOME/examples/bin
+	$SIMPL_HOME/examples/bin/tclSender.tcl
+	$SIMPL_HOME/examples/bin/tclSim
+
+"tclSender.tcl" will be the be the sender of messages to "tclSim".
+These messages will demonstate Send/Receive/Reply messaging between a
+Linux app and a stand alone Tcl script.
+
+===================================
+How to run the tclSender example
+===================================
+For this you will need to open 3 consoles (or Xterm windows).
+
+on Console 1: logged into $SIMPL_HOME/bin
+
+	fclogger -n LOGGER   
+	(or fclogger -n LOGGER > junk   to redirect trace log to a file)
+	where
+		LOGGER - name given to the trace logger process
+
+on console 2: logged into $SIMPL_HOME/examples/bin
+
+	tclSim -n TCLSIM -l LOGGER
+	where
+		TCLSIM - name given to the "tclSim" process
+		LOGGER - name of trace logger
+
+The "tclSim" (Sim stands for simulator) should prompt for a command with:
+	Enter command:
+for a list of possible commands you can enter ?
+
+on Console 3: logged into $SIMPL_HOME/examples/bin
+
+	tclSender.tcl -N TCLSEND -r TCLSIM -m 0xff -l LOGGER
+	where
+		TCLSEND - name given to the "tclSender.tcl" process
+		TCLSIM - name given to the receiver process
+		0xff - command line log mask override
+		LOGGER - name of trace logger in step 1 above
+
+To run this little example type each of the follow commands in sequence
+and examine the output of the trace logger on console 1 BETWEEN each.
+
+	Enter command: r hi
+	Enter command: r hello everybody
+	Enter command: q
+
+What we are doing is causing a FC_TESTING_MSG to be sent from 
+tclSender.tcl  -> tclSim.  This message will then be displayed 
+on console 2 screen and placed in the trace log.
+
+The source for the tclSender.tcl is arrived at by cat'g all the 
+.tcl files in (the make command does this)
+	$SIMPL_HOME/examples/tclSender/src/ 
+
+Have fun.
+
+We have used a similar scheme to form the basis of some very powerful
+Tcl/Tk applications.   It is very straightforward to extend this example
+to a GUI type application using Tk.

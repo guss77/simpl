@@ -1,0 +1,9 @@
+#! /bin/sh
+
+python receiverCcharacter.py &
+
+sleep 2
+
+python senderCcharacter.py
+
+fcslay RECEIVER_C

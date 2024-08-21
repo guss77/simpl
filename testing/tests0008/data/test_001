@@ -1,0 +1,8 @@
+#=========================================
+# demo of automated stimulator testing
+#=========================================
+# Test 001
+#
+Test		hi
+Sleep 		2
+Test		hello

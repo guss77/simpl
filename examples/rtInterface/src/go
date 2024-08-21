@@ -1,0 +1,17 @@
+echo "==================================="
+echo starting rtInterface example
+echo "==================================="
+
+insmod /usr/src/v1.1/rtl/modules/rtl_fifo.o
+insmod /usr/src/v1.1/rtl/modules/rtl_sched.o
+insmod $FC_HOME/examples/modules/rt_process.o
+
+cd $FC_HOME/examples/bin
+
+showThis -n RTLOGGER -l LOGGER
+
+echo stopping rtInterface example
+slay rtStim
+rmmod rt_process
+rmmod rtl_sched
+rmmod rtl_fifo

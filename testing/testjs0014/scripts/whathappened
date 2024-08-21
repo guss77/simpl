@@ -1,0 +1,19 @@
+#!/bin/sh
+
+TEST_NO=js0014
+TEST_DESC="Java Ssimpl java-receiver/Jsimpl java-sender offset message test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/aftershot
+
+echo "preparing results for test#$TEST_NO ... please wait" | tee $OUTFILE
+date | tee -a $OUTFILE
+
+#
+# You may want to grep log for signatures here
+#
+echo "======================="		 | tee -a $OUTFILE
+
+cat $TEST_DIR/results/test.out 		 | tee -a $OUTFILE
+
+echo "done preparing results for test#$TEST_NO"

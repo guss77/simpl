@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# auxtest - runs the local auxtest script
+#
+#$Log: auxtest,v $
+#Revision 1.1  2007/07/24 20:24:35  bobfcsoft
+#new file
+#
+#
+
+NUM_OF_ARGS=$#
+FILE_NAME=$0
+TEST_NO=$1
+INPUT_FILE=$2
+THIRD_ARG=$3
+
+echo "TEST_NO=$TEST_NO"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+
+# usage
+function usage
+{
+echo;
+echo "================= auxtest ==================";
+echo "  Actually perform the test in automated ";
+echo "	fashion if possible";
+echo;
+echo "  auxtest <test#>";
+echo "  eg.";
+echo "        auxtest 38";
+echo "================= done ====================";
+echo
+}
+
+if [ $NUM_OF_ARGS = 0 ]
+then
+	usage
+else
+if [ $NUM_OF_ARGS = 1 ]
+then
+
+$TEST_DIR/scripts/auxtest
+else
+
+if [ $NUM_OF_ARGS = 2 ]
+then
+         if [ $INPUT_FILE = e ]
+         then
+         vi $TEST_DIR/scripts/auxtest
+         else
+         $TEST_DIR/scripts/auxtest $INPUT_FILE
+         fi
+else
+if  [ $NUM_OF_ARGS = 3 ]
+                
+then
+$TEST_DIR/scripts/auxtest $INPUT_FILE $THIRD_ARG	
+
+fi
+fi
+fi
+fi

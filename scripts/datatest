@@ -1,0 +1,94 @@
+#!/bin/bash
+#
+#$Log: datatest,v $
+#Revision 1.5  2008/03/25 22:05:33  bobfcsoft
+#fixed usage
+#
+#Revision 1.4  2008/03/25 22:01:03  bobfcsoft
+#new scenario index option
+#
+#Revision 1.1  2004/06/04 11:55:08  comefromottawa
+#Added scripts files such as copy/data/do/link/post/pre/see/viewtest for seed2
+#
+#
+
+TEST_DIR=$TEST_HOME/testing/test$1/data
+
+# readline2
+function readline2
+{
+read myline
+read myline
+
+echo $myline
+}
+
+# createIndex
+function createIndex
+{
+
+cd $TEST_DIR/scenarios
+for file in `ls`
+do
+	if [ ! -d $file ]
+	then
+		readline2 < $file
+	fi
+done
+}
+
+# usage
+function usage
+{
+echo;
+echo "================ datatest ==================";
+echo "   work with data file of a given test";
+echo;
+echo "   datatest <test#> <filename> <options>";
+echo "   where options are:";
+echo "      i - index of scenario subdir";
+echo "";
+echo "   eg.";
+echo "        datatest 1 test1.dat";
+echo "================= done ====================";
+echo
+}
+
+if [ $# = 0 ]
+then
+	usage
+else
+if [ $# = 1 ]
+then 
+	ls -F $TEST_DIR
+else
+
+if [ $# = 2 ]
+then
+	if [ $2 = i ]
+	then
+		createIndex
+	else 
+		vi $TEST_DIR/$2
+	fi
+else
+
+if [ $# = 3 ]
+then
+
+	if [ $3 = xout ]
+	then
+		cd $TEST_DIR
+		xout $2
+	else
+	if [ $3 = xin ]
+	then
+		cd $TEST_DIR
+		xin $2
+	fi
+	fi
+
+fi
+fi
+fi
+fi

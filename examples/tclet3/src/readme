@@ -1,0 +1,63 @@
+-------------------------------------------
+	tclet RPC example
+-------------------------------------------
+FCsoftware Inc. 2000, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+=======================================
+How to build the tclet3 example.
+=======================================
+This makes the assumption that you have already downloaded and
+installed the latest SIMPL code.  It also makes the assumption
+that you have tcl8.0 or better installed on your machine.
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$SIMPL_HOME. ie:
+	cd $SIMPL_HOME
+	cd ..
+	tar -zxvf <tarballname>
+
+2) build the tclet executables
+	cd $SIMPL_HOME/examples/tclet3
+	make clobber
+	make install
+
+This will place three files in $SIMPL_HOME/examples/bin
+	$SIMPL_HOME/examples/bin/tclet3.html
+	$SIMPL_HOME/examples/bin/tclet3.tcl
+	$SIMPL_HOME/examples/bin/rpcServer
+
+"tclet3.tcl" is the applet code and tclet3.html is the web page which embeds the
+applet.   rpcServer is the SIMPL application which handles the "remote" end of
+the Remote Procedure Call.
+
+===================================
+How to run the tclet example
+===================================
+Note: an assumption is made that you have downloaded and installed
+TclPlugin v2.0 or better.   The assumption is also made that you have
+installed the fcsocket.tcl package in the TclPlugin directory as per
+the 
+	$SIMPL_HOME/tcl/src/readme
+
+For this you will need to open a single console (or Xterm window).
+
+on Console 1: logged into $SIMPL_HOME/examples/tclet3/src
+
+	go
+
+using the browser retrieve the tclet3.html file above.   This should cause the 
+tclet (tclet3.tcl) to render.   At this point the applet has been installed
+as a normal SIMPL enabled "sender".
+
+You then need to press the "make RPC call" button to force the 
+RPC call to occur.   
+
+If this step is successful the color of the text box should change to 
+reflect the coding on the rpcServer SIMPL process. 
+
+Have fun.

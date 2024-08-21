@@ -1,0 +1,10 @@
+-----------------------------------------------
+js0005: Java Ssimpl character pack/unpack test
+
+This test examines the veracity of the packing and unpacking methods with
+respect to a character memory arrangement. Such an arrangement is simply a
+packing of each memory element in the first available memory position; ie.
+concatenated without any form of padding. The packing/unpacking methods cover
+all java primitive forms and one dimensional arrays.
+
+These methods are contained in the class called Ssimpl.

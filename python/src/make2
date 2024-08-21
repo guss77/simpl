@@ -1,0 +1,92 @@
+###############################################
+#
+# Makefile - for simpl python 2
+#
+#-----------------------------------------------------------------------
+#    Copyright (C) 1999, 2002, 2007 FCSoftware Inc. 
+#
+#    This software is in the public domain.
+#    Permission to use, copy, modify, and distribute this software and its
+#    documentation for any purpose and without fee is hereby granted, 
+#    without any conditions or restrictions.
+#    This software is provided "as is" without express or implied warranty.
+#
+#    If you discover a bug or add an enhancement contact us on the
+#    SIMPL project mailing list. 
+#
+#-----------------------------------------------------------------------
+#
+#$Log: make2,v $
+#Revision 1.1  2013/06/18 14:21:46  bobfcsoft
+#new
+#
+#
+###############################################
+PYTHONVER=2.7
+
+SIMPL_OBJS=../../simplipc/src/obj/simpl.o ../../simplipc/src/obj/simplUtils.o
+MOD_DIR=../modules
+OBJ_DIR=./obj
+LIB_DIR=../lib
+INCL_DIR1=/usr/include/python$(PYTHONVER)
+INCL_DIR2=../include
+INCL_DIR3=../../include
+MY_LIBRARY=simpl2module.so
+MY_OBJECT=simpl2module.o
+MY_SOURCE=simpl2module.c
+
+CC=cc 
+CFLAGS=-fPIC -Wall -I$(INCL_DIR1) -I$(INCL_DIR2) -I$(INCL_DIR3)
+LFLAGS=-shared $(SIMPL_OBJS)
+
+description:
+	@(\
+	echo;\
+	echo Python SIMPL build starting; \
+	echo "Compiling $(MY_SOURCE) --> $(MY_LIBRARY)";\
+	echo;\
+	echo "** Note that this library works only for Python 2 **";\
+	echo)
+
+#========================
+# Default targets
+#========================
+all:\
+	description\
+	$(LIB_DIR)/$(MY_LIBRARY)
+	cp $(LIB_DIR)/$(MY_LIBRARY) $(MOD_DIR)
+	@echo python simpl all
+
+#===================
+# Library 
+#===================
+$(LIB_DIR)/$(MY_LIBRARY): $(OBJ_DIR)/$(MY_OBJECT)
+	$(CC) $(LFLAGS) $< -o $@
+
+#===================
+# Compiles
+#===================
+$(OBJ_DIR)/$(MY_OBJECT): $(MY_SOURCE)
+	$(CC) -c $(CFLAGS) -o $@ $(MY_SOURCE)
+
+#===================
+#  install
+#===================
+install:\
+	description\
+	$(LIB_DIR)/$(MY_LIBRARY)
+	cp $(LIB_DIR)/$(MY_LIBRARY) $(MOD_DIR)
+	cp $(MOD_DIR)/$(MY_LIBRARY) $(SIMPL_HOME)/modules
+	cp $(MOD_DIR)/csimpl.py $(SIMPL_HOME)/modules
+	cp $(MOD_DIR)/tclsimpl.py $(SIMPL_HOME)/modules
+	@echo python simpl install
+
+#===================
+#  clean
+#===================
+clean:
+	@-rm -f $(OBJ_DIR)/*.o
+	@-rm -f $(LIB_DIR)/$(MY_LIBRARY)
+	@-rm -f $(MOD_DIR)/$(MY_LIBRARY)
+	@-rm -f $(SIMPL_HOME)/modules/$(MY_LIBRARY)
+	@echo python simpl clean

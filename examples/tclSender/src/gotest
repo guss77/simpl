@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd $SIMPL_HOME/bin
+fclogger -n LOGGER > junk &
+
+cd $SIMPL_HOME/examples/tclSender/bin
+tclSim -n TCLSIM -l LOGGER
+
+slay tclSim
+slay fclogger

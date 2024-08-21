@@ -1,0 +1,97 @@
+-------------------------
+FCsoftware Inc. 1999, 2007
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+-------------------------
+
+===================================
+How to build the logmasker example.
+===================================
+This makes the assumption that you have already downloaded and
+installed the SIMPL code.
+
+1) undo the SIMPL examples tarball at one directory ABOVE
+$SIMPL_HOME. ie:
+	cd $SIMPL_HOME
+	cd ..
+	tar -zxvf <tarballname>
+
+2) build the logmasker executables
+	cd $SIMPL_HOME/examples/logmasker/src
+	make clobber
+	make install
+
+This will place two executables in $SIMPL_HOME/examples/bin
+	$SIMPL_HOME/examples/bin/receiver
+	$SIMPL_HOME/examples/bin/logmasker
+
+"receiver" will be the be the receiver of messages from "logmasker".
+These messages will dynamically alter the log mask that "receiver" is
+using to send out trace log messages.
+
+===================================
+How to run the logmasker example
+===================================
+For this you will need to open 3 consoles (or Xterm windows).
+
+on Console 1: logged into $FC_HOME/bin
+
+	fclogger -n LOGGER   
+	(or fclogger -n LOGGER > junk   to redirect trace log to a file)
+	where
+		LOGGER - name given to the trace logger process
+
+on Console 2: logged into $SIMPL_HOME/examples/bin
+
+	receiver -n BOBR -m 0xff -l LOGGER
+	where
+		BOBR - name given to the "receiver" process
+		0xff - command line log mask override
+		LOGGER - name of trace logger in step 1 above
+
+on console 3: logged into $SIMPL_HOME/examples/bin
+
+	logmasker -n BOBL -r BOBR -l LOGGER
+	where
+		BOBL - name given to the "logmasker" process
+		BOBR - name of recipient (the "receiver" on console 2)
+		LOGGER - name of trace logger
+
+The "logmasker" should prompt for a command with:
+	Enter command:
+for a list of possible commands you can enter ?
+
+To run this little example type each of the follow commands in sequence
+and examine the output of the trace logger on console 1 BETWEEN each.
+
+	Enter command: m 0
+	Enter command: m 1
+	Enter command: m 2
+	Enter command: m 4
+	Enter command: m 3
+	Enter command: m 5
+	Enter command: m 7
+
+Remember that the number gets converted to a bit mask.  ie. 3 = 0011 etc.
+
+What we are doing is causing a FC_SET_LOG_MASK_MSG to be sent from 
+"logmasker" -> "receiver".  This message will then dynamically alter the
+globalMask variable in "receiver".   Depending on the bit which is set in
+that mask, different message levels are enabled or disabled.   The trace 
+messages which are the subject of this test are the "fclog" calls inside the 
+main loop in:
+
+	$SIMPL_HOME/examples/logmasker/src/receiver.c 
+
+The various log levels are defined in:
+
+	$SIMPL_HOME/examples/logmasker/src/receiver.h
+
+Have fun.
+
+We have used a similar scheme to form the basis of a very powerful dynamic
+trace logging system which greatly enhances our abilities to remotely 
+support complex bodies of code (where source debuggers are not an option).
+		

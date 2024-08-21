@@ -1,0 +1,57 @@
+================================================================================
+readme for the eightLeds arduino/SIMPL example
+================================================================================
+
+FCsoftware Inc. 2013
+This code is released as open source.   We hope you find 
+it useful.  If you discover a bug or add an enhancement 
+contact us on the SIMPL project mailing list. 
+
+--------------------------------------------------------------------------------
+
+This example is comprised of an ardunio board with ethernet shield connected to
+the internet. There are eight leds connected to eight digital i/o ports
+configured for output by the eightLeds.ino program. The program eightLeds.ino is
+a SIMPL receiver which is compiled and loaded onto the arduino via the arduino
+interface. The arduino receives messages from a SIMPL sender called eightLeds.py
+that tells it how to change the states of the leds. 
+
+It is assumed that your host computer has the arduino and the SIMPL packages
+installed and configured correctly. It is also assumed that your host has
+internet connectivity.
+
+*** You will have to copy the eightLeds.ino file into your sketchbook directory.
+
+1. Bring up the file eightLeds.ino in the arduino IDE. Edit the line defining
+the MAC address for the ethernet shield to be the one on your chip. The line of
+interest is around line 27.
+
+2. Compile eightLeds.ino via the arduino IDE.
+
+3. Upload the image file to the arduino via the arduino IDE.
+
+4. Open the serial monitor on the IDE in order to observe feedback from the
+arduino.
+
+5. If you see "Initialization is complete." then the arduino has successfully
+SIMPL name attached on the icanprogram server. If not, there is a network issue
+to be dealt with. It may take thirty seconds depending on the network: Be
+patient.
+
+6. Run eightLeds.py from the command line by: python eightLeds.py
+eightLeds.py can be run by either Python 2 or Python 3 interpreters. A small gui
+with eight switches will appear. eightLeds.py will look for the SIMPL name of
+the eightLeds.ino program. If found, it will then be in a postion to send SIMPL
+messages to eightLeds.ino running on the arduino. The gui switches can be
+clicked on with a mouse to change the state of the corresponding led. Hitting
+the send button will cause eightLeds.py to send a message to eightLeds.ino to
+change the states of the leds accordingly.
+
+The message will come from eightLeds.py, sent through the internet to the
+tclSurrogate on the icanprogram host, then be routed back to the arduino
+running eightLeds.ino. The arduino will receive the message, change the leds
+accordingly and then reply a NULL response which will go back to the
+tclSurrogate on the icanprogram host and then back to the eightLeds.py program.
+
+The purpose of these little programs is to demonstrate how the arduino can SIMPL
+message over a network as a SIMPL receiver.

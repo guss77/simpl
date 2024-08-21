@@ -1,0 +1,50 @@
+Proxy SoftwareIC
+==============================
+
+Occasionally in high transaction rate systems there is a need to
+run more than one instance of a SIMPL receiver and route messages 
+in parallel.
+
+The proxy IC is designed to do just that.    
+
+The proxy IC makes use of intimate knowledge of the workings of
+SIMPL fifos to achieve a transparent relaying of messages from 
+a sender to a one of the prestarted receivers.   The relay is done
+in such a way that the receiver sees it as a normal SIMPL message and
+the sender gets the reply directly from the receiver.   The proxy doesn't 
+have to read and relay the actual message packet it only has to read and
+relay the shmid on the SIMPL fifo.
+
+To achieve a simple queuing of prestarted receivers,  a special fifo owned
+by the proxy is used.   The prestarted receivers place an ID on this fifo
+to indicate that they are available to process transactions.
+
+The sender only needs to know the SIMPL name of the proxy in order to reach 
+any of the prestarted receivers.
+
+To run the unit test s0006 you'll need two consoles
+
+On the first console you'll want to tail the trace log file as in:
+
+	cd $TEST_HOME/tests0006/results
+	tail -f junk
+
+On the second console you'll run the main test script
+
+	dotest s0006
+	->t hi 1
+	->t hi 2
+	->t hi 3
+	->t hi 4
+	->
+
+If you enter these fast enough (in less than 10 secs) you should see the 
+transaction buffer of prestarted processes overflow.   To slow down the
+transactions enough to make this happen each receiver stub is put to 
+sleep for 10 sec before it places the ID onto the special fifo to the proxy.
+
+Have fun.   As always we'd love to hear from you with suggestions, bug reports
+or fixes or any enhancements.   Just contact us at the SIMPL project
+mailing list.
+
+the SIMPL project developers 

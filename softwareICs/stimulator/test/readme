@@ -1,0 +1,49 @@
+==============================================================
+Stimulator SIMPL softwareIC.
+==============================================================
+
+There are 3 processes involved in this demo of the stimulator IC.
+	receiver - the process which receives and processes messages
+	stimulator - the process which stimulates the receiver
+	recvTester - the process which illustrates automation of stimulator
+
+======================================
+How to run stimulator unit testing.
+======================================
+You will need two consoles logged onto
+
+	$SIMPL_HOME/softwareICs/stimulator/test
+
+for this test.
+
+On console 1:
+You will need to run the startup script:
+
+	gostim
+
+This will startup the following processes:
+	fclogger - trace logger
+	receiver
+	stimulator
+
+You can terminate this script with a <ctrl C> or by entering "q" at the
+-> stimulator prompt.
+
+At the -> stimulator prompt you can try entering the following 
+-> ?   - this will display all the stimulator UI options
+-> t hi - this will send this message to the receiver 
+-> q - this will cause the stimulator to terminate gently
+
+On console 2:
+You will need to run the automation script:
+
+	goauto
+
+This will startup the following processes:
+	recvTester
+which will take its sequencing instructions from a data file called
+	$SIMPL_HOME/softwareICs/data/test_001
+
+NOTE:
+The trace logger output is being routed to file
+	$SIMPL_HOME/bin/junk

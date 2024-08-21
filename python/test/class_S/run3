@@ -1,0 +1,15 @@
+#! /bin/sh
+
+$SIMPL_HOME/bin/tclSurrogate -n SURRO -p 50000 &
+
+sleep 1
+
+python receiverCoffset.py &
+
+sleep 1
+
+python senderCoffset.py
+
+fcslay RECEIVER_O
+killall python receiverCoffset.py 1>/dev/null 2>&1
+fcslay SURRO

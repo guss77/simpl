@@ -1,0 +1,70 @@
+FCTCLX STUFF
+This shared library exposes the SIMPL Send/Receive/Reply API
+to Tcl/Tk applications running on the same box.
+
+With this API any Tcl/Tk process can become a SIMPL enabled
+process with all of the powerful features that brings.
+
+=============================
+TCL SURROGATE STUFF 
+The tclSurrogate in conjunction with the fcsocket.tcl/pkgIndex.tcl package
+form a powerful combination.   With this you can readily build
+up Tcl/Tk applets which can interact with other SIMPL enabled
+processes via TCP/IP sockets and the tclSurrogate process.
+
+The way in which it works is that the applet gets served from
+a host in the normal manner.   If the fcsocket.tcl/pkgIndex.tcl package library
+is placed in the TclPlugin directory on the client machine, a SIMPL
+API is available to the applet.
+
+The security policy is set as "home".  This means that the tclSurrogate
+process must be running on the same host as the web server.  The
+tclSurrogate process listens on socket 8000.
+
+When the applet comes alive the first thing it must do is connect to a 
+socket on the home URL at port 8000.   When a connection is accepted by
+the tclSurrogate process it will fork a child process to handle the 
+surrogate duties.   This child will be given a default SIMPL name based
+on that of the tclSurrogate parent.  The applet can then use the Tcl/Tk
+command in the fcsocket API to change the name of the surrogate child
+
+	vc_name_attach {mySocket myName bufSize}
+
+At this point the applet and the surrogate child form a tightly coupled
+pair.  From a logical point of view they can be viewed as a single SIMPL
+enabled process.   If the intended application calls for the applet to 
+be a SIMPL "receiver" then it would use the normal Tcl/Tk schemes for 
+blocking on a read of this surrogates socket.  When another SIMPL process
+(a sender) wishes to send a message to the applet it simply does all the
+normal SIMPL things to nameLocate and sendMsg the request.   This message
+will arrive at the surrogate child process.   The surrogate child will 
+wrap the message in a simple protocol wrapper and fire it on to the applet
+over the socket link.   The applet would receive the message, unwrap it,
+process it and reply using the API provided
+
+	replyToSocket {mySocket myMsg}
+
+When the surrogate gets the reply it unwraps it and routes it on to the
+correct sender ID that is expecting it.   Note that the tclSurrogate in
+this mode has all the features one would expect of a SIMPL "receiver".
+It can handle multiple "senders", deferred replies etc.
+
+The applet could be designed to be a SIMPL "sender".  In that case it 
+would probably leave the default name on the surrogate child and use
+the API call to nameLocate the intended recipient of its message.
+
+	vc_name_locate {mySocket thisName}
+
+Once armed with the ID of the receiver process it would use the sendMsg 
+API call to send a message out.
+
+	sendToSocket {mySocket myMsg}
+
+Upon receiving the message in this manner the surrogate process will
+relay it on to the receiver in the normal blocking send manner.  The
+reply would traverse the reverse route all the way back to the applet.
+
+Good luck.
+
+
+

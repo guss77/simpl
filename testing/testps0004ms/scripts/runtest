@@ -1,0 +1,29 @@
+#!/bin/sh
+
+TEST_NO=ps0004ms
+TEST_DESC="mod_S Python receiver/sender, offset mode tclSurrogate unit test"
+
+export PYTHONPATH=$PYTHONPATH:$SIMPL_HOME/modules
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test #$TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+cd $SIMPL_HOME/bin
+tclSurrogate -n SURRO -p 50000 &
+
+sleep 1
+
+cd $SIMPL_HOME/python/test/class_S
+python receiverCoffset.py &
+
+python senderCoffset.py
+
+fcslay RECEIVER_O
+killall python receiverCcharacter.py
+fcslay SURRO
+
+echo "Test finished you can run posttest $TEST_NO for result"

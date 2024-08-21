@@ -1,0 +1,5 @@
+simpl (2.3.3-0) unstable; urgency=low
+
+  * Intial framework for simpl package.
+
+ -- Paul Corner <paul_c@users.sourceforge.net>  Sun, 27 Mar 2005 12:55:00 +0000

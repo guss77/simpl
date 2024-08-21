@@ -1,0 +1,16 @@
+#! /bin/sh
+
+CLASSPATH=../../class
+
+$SIMPL_HOME/bin/tclSurrogate -n SURRO -p 50000 &
+
+sleep 1
+
+../../bin/receiver &
+
+sleep 1
+
+java -classpath $CLASSPATH SenderSbinary
+
+fcslay RECEIVER
+fcslay SURRO

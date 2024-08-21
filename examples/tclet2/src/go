@@ -1,0 +1,21 @@
+#!/bin/sh
+echo tclet sender example
+
+echo "============================================"
+cd $SIMPL_HOME/bin
+echo "starting trace logger attached as LOGGER"
+fclogger -n LOGGER > junk &
+
+echo "starting tcl surrogate attached as SURRO"
+echo "============================================"
+tclSurrogate -n SURRO -l LOGGER -p 50000 &
+
+echo "============================================"
+cd $SIMPL_HOME/surrogates/tclSurrogate/bin
+echo "starting fifoReceiver attached as BOBR"
+fifoReceiver -n BOBR -l LOGGER
+
+echo stopping tclet sender example
+echo "============================================"
+$SIMPL_HOME/bin/fcslay tclSurrogate
+$SIMPL_HOME/bin/fcslay fclogger

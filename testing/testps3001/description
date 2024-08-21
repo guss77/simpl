@@ -1,0 +1,10 @@
+-----------------------------------------------
+ps3001: Python3-SIMPL unit test
+
+There are two SIMPL modules involved in this test:
+	1. receiver.py
+	2. sender.py
+
+The receiver.py is run in the background and the
+sender.py follows in the foreground.
+

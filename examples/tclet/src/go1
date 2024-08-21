@@ -1,0 +1,12 @@
+#!/bin/bash
+echo starting tclet stimulator
+
+if [ $# != 1 ]
+then
+	echo "usage"
+	echo " go1 <message>"
+
+else
+	cd $SIMPL_HOME/tcl/bin
+	fifoSender -n BOB -r BOBT -l LOGGER -m "$1"
+fi

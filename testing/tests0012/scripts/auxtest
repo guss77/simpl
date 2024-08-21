@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+#$Log: auxtest,v $
+#Revision 1.1  2008/12/17 15:48:50  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0012
+TEST_DESC="broadcaster unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+if [ $# = 1 ]
+then
+	echo "============================================="
+	echo " at prompt type"
+	echo " -> r"
+	echo " to register this process"
+	echo "============================================="
+
+	cd $SIMPL_HOME/softwareICs/broadcaster/bin
+	receiverSim -n $1 -f BOBI -l LOGGER
+else
+	echo "need to supply SIMPL name as argument"
+fi
+
+echo "Test finished you can run posttest $TEST_NO for result"

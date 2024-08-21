@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+#$Log: auxtest,v $
+#Revision 1.1  2007/07/24 20:34:24  bobfcsoft
+#new file
+#
+#
+
+TEST_NO=s0005
+TEST_DESC="scheduler unit test"
+
+TEST_DIR=$TEST_HOME/testing/test$TEST_NO
+OUTFILE=$TEST_DIR/results/test.out
+
+echo "Starting up test $TEST_NO" | tee $OUTFILE
+echo $TEST_DESC | tee -a $OUTFILE
+date | tee -a $OUTFILE
+
+echo "" | tee -a $OUTFILE
+echo "This may take a while to complete ... please wait" | tee -a $OUTFILE
+echo "" | tee -a $OUTFILE
+
+cd $SIMPL_HOME/softwareICs/scheduler/bin
+cksum viewer | tee -a $OUTFILE
+viewer -n VIEWER -a SCHEDULER -l LOGGER
+
+fcslay VIEWER
+echo "Test finished you can run posttest $TEST_NO for result"

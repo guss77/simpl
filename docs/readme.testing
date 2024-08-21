@@ -1,0 +1,259 @@
+======================================
+readme.testing
+======================================
+$Log: readme.testing,v $
+Revision 1.2  2009/01/22 14:53:55  bobfcsoft
+cleanup
+
+Revision 1.1  2005/11/12 12:14:31  bobfcsoft
+v3.0 prerelease
+
+======================================
+
+This file is intended as a brief overview of the 
+SIMPL Testing Framework (STF) script set.
+
+Background:
+Testing is an integral part of any software project.
+
+Testing is also time consuming and can be tedious.  In order to insure
+that adequate testing gets sustained we believe that the tools have
+to be readily accessable and simple to use.
+
+As such this patch to the SIMPL tree introduces a series of wrapper
+scripts which allow the developer/tester to manipulate an organized
+set of testing scripts in a convenient straightforward manner.
+
+-----------------------------------
+
+The testing tree:
+The scripts in this package are contained in the tarball
+simpltest.tar.gz
+
+When you undo this tarball at one directory above the SIMPL_HOME
+directory the following files will be added:
+
+$SIMPL_HOME/docs/readme.testing
+$SIMPL_HOME/scripts/auxtest
+$SIMPL_HOME/scripts/copytest
+$SIMPL_HOME/scripts/datatest
+$SIMPL_HOME/scripts/dotest
+$SIMPL_HOME/scripts/linktest
+$SIMPL_HOME/scripts/posttest
+$SIMPL_HOME/scripts/pretest
+$SIMPL_HOME/scripts/seetest
+$SIMPL_HOME/scripts/viewtest
+$SIMPL_HOME/testing/...
+
+
+The above scripts are all wrapper scripts which interact in one way
+or another with the testing tree.
+
+The testing tree is anchored by a single environment variable called:
+
+	TEST_HOME
+
+NOTE:
+For the SIMPL project tests we will be making the assumption that
+TEST_HOME=SIMPL_HOME
+
+
+The testing tree consists of the following subdirectories
+
+$TEST_HOME/testing/testaaaa/   (where aaaa is test id string)
+$TEST_HOME/testing/testbbbb/
+$TEST_HOME/testing/testcccc/
+...
+
+$TEST_HOME/testing/templates/desc_template
+$TEST_HOME/testing/templates/run_template
+$TEST_HOME/testing/templates/setup_template
+$TEST_HOME/testing/templates/what_template
+
+
+The actual test descriptions,  scripts,  data,  results are all
+stored under the
+
+$TEST_HOME/testing/testaaaaa/   (where aaaaa is the test id string)
+
+tree as:
+
+$TEST_HOME/testing/testaaaaa/description
+	- a text file describing the test
+	- the first line of this file is used by the test index
+	function so it should be uniquely descriptive
+
+$TEST_HOME/testing/testaaaaa/scripts/setup
+	- a script which is called by the pretest wrapper script
+	- this script is normally used to setup the initial conditions for
+	the test
+
+$TEST_HOME/testing/testaaaaa/scripts/runtest
+	- a script which is called by the dotest wrapper script
+	- this script is normally used to execute the test
+
+$TEST_HOME/testing/testaaaaa/scripts/whathappened
+	- a script which is called by the posttest wrapper script
+	- this script is normally used to analyse the test results
+
+$TEST_HOME/testing/testaaaaa/scripts/auxtest
+	- a script which is called by the auxtest wrapper script
+	- this script is normally used in cases where the runtest
+	needs to be split into 2 consoles
+
+$TEST_HOME/testing/testaaaaa/data/
+	- all the data files required for the test go here
+
+$TEST_HOME/testing/testaaaaa/results/
+	- all the trace log and other output files from test go here
+
+
+-----------------------------------
+
+Wrapper scripts:
+
+
+===========================
+
+auxtest - supplimentary script for 2 part tests
+
+Usage:
+  auxtest <testID> <options>
+
+Where options are:
+		
+	e - edit test description with vi
+
+eg.
+        auxtest f38
+
+NOTE:
+This wrapper script runs the test specific auxtest script under 
+the test tree.
+
+===============================
+
+copytest - copy test files to a new test";
+
+Usage:
+   copytest <from testID> <to testID>
+
+eg.
+        copytest b39 f13
+
+ 	will create a new test f13 as a clone of test b39
+
+===============================
+
+datatest - work with data file of a given test
+
+Usage:
+	datatest <testID> <filename> <options>
+
+where options are:
+     xin - check in the pretest script to RCS
+     xout - check out the pretest script from RCS
+
+eg.
+     datatest b1 test1.dat
+
+===============================
+
+dotest - perform the test 
+
+Usage:
+	dotest <testID> <options>
+
+Where options are:
+		
+	e - edit test description with vi
+
+eg.
+        dotest d38
+
+NOTE:
+This wrapper script runs the test specific runtest script under 
+the test tree.
+
+===============================
+
+linktest - forge symbolic links to RCS'd test files
+
+Usage:
+   linktest <testID>
+
+eg.
+        linktest 39
+
+	will create virtual tree links for test39
+
+===============================
+
+posttest - do some post processing of test results
+
+Usage:
+	posttest <testID> <options>
+
+Where options are:
+		
+	e - edit test description with vi
+
+eg.
+        postest 39
+
+NOTE:
+This wrapper script runs the test specific whathappened script under 
+the test tree.
+
+===============================
+
+pretest - preset up the environment for a given test
+
+Usage:
+  pretest <testID> <options>
+
+where options are:
+      e - edit the pretest script
+      xin - check in the pretest script to RCS
+      xout - check out the pretest script from RCS
+
+eg.
+        pretest 39
+
+NOTE:
+This wrapper script runs the test specific setup script under 
+the test tree.
+
+===============================
+
+seetest - view / edit / create the test descriptions
+
+Usage:
+	seetest <testID> <options>
+
+Where options are:
+		
+	e - edit test description with vi
+
+Note: the special case 
+
+	seetest i
+
+will display the index of all tests in the system.	
+
+===============================
+
+viewtest - results for a test
+
+Usage:
+   viewtest <testID> <options>";
+
+Where options are:
+       before - results from pretest
+       after - results from posttest
+       ls - list all the results
+       <filename> - view exact result file
+eg.
+viewtest 39 after
+
+===============================
